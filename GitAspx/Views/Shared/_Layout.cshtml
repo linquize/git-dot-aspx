@@ -1,9 +1,8 @@
 ﻿@using GitAspx;
-<!DOCTYPE html>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<head runat="server">
-    <title>@ViewBag.Title</title>
+<head>
+    <title>@ViewBag.Title - GitAspx</title>
 	<link rel="Stylesheet" type="text/css" href="@Url.Content("~/Content/Site.css")" />
 	<!--[if IE 7]> <style type="text/css">@@import "@Url.Content("~/Content/IE7-override.css")";</style> <![endif]-->
 	<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")"></script>
@@ -11,10 +10,17 @@
 </head>
 <body>
     <div>
+        <script type="text/javascript">
+            if (jQuery.browser.msie && parseFloat(jQuery.browser.version) <= 7.0) {
+                document.write("<div style='font-size: 20px; color: red; text-align: center; background-color: white'>Please use Internet Explorer at least 8 or fail to use some features!</div>");
+            }
+        </script>
         @RenderBody()
 		
         <div id="footer">
-			<a href="http://github.com/JeremySkinner/git-dot-aspx">Powered by GitAspx @Helpers.Version</a>
+			<a href="http://github.com/linquize/git-dot-aspx">Powered by GitAspx @Helpers.Version</a>,
+            <a href="http://github.com/linquize/GitSharp">GitSharp @Helpers.GitDllVersion</a>,
+            <a href="http://github.com/linquize/GitSharp">GitSharp.Core @Helpers.GitCoreDllVersion</a>
 		</div>
     </div>
 </body>

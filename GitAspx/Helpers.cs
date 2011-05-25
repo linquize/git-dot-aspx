@@ -24,61 +24,46 @@ namespace GitAspx {
 	using System.Web;
 	using System.Web.Mvc;
 	using System.Web.Routing;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.IO;
 
 	public static class Helpers {
-		static readonly string version;
+        static readonly string version, gitDllVersion, gitCoreDllVersion;
 
 		static Helpers() {
 			version = typeof(Helpers).Assembly.GetName().Version.ToString();
+            gitDllVersion = typeof(GitSharp.Git).Assembly.GetName().Version.ToString();
+            gitCoreDllVersion = typeof(GitSharp.Core.AnyObjectId).Assembly.GetName().Version.ToString();
 		}
 
 		public static string Version {
 			get { return version;}
 		}
 
-		public static string ProjectUrl(this UrlHelper urlHelper, string project) {
-			return urlHelper.RouteUrl("project", new RouteValueDictionary(new {project}),
-			                          urlHelper.RequestContext.HttpContext.Request.Url.Scheme,
-			                          urlHelper.RequestContext.HttpContext.Request.Url.Host);
+        public static string GitDllVersion {
+            get { return gitDllVersion; }
+        }
+
+        public static string GitCoreDllVersion {
+            get { return gitCoreDllVersion; }
+        }
+
+		public static string GetGitUrl(this UrlHelper urlHelper, string project) {
+            return urlHelper.RouteUrl("giturl", new RouteValueDictionary(new { project }),
+                                      urlHelper.RequestContext.HttpContext.Request.Url.Scheme,
+                                      urlHelper.RequestContext.HttpContext.Request.Url.Host);
 		}
 
-		public static string ToPrettyDateString(this DateTime d) {
-			TimeSpan s = DateTime.Now.Subtract(d);
-			int dayDiff = (int)s.TotalDays;
-			int secDiff = (int)s.TotalSeconds;
+        public static string ToPrettyDateString(this DateTimeOffset d) {
+            TimeSpan ts = DateTimeOffset.Now.Subtract(d);
+            return PrettyDateCache.ToPrettyDateString(ts);
+        }
 
-			if (dayDiff < 0 || dayDiff >= 31)
-				return string.Format("{0:MMMM d, yyyy}", d);
-
-			if (dayDiff == 0) {
-				if (secDiff < 60)
-					return "just now";
-
-				if (secDiff < 120)
-					return "1 minute ago";
-
-				if (secDiff < 3600)
-					return string.Format("{0} minutes ago", Math.Floor((double)secDiff / 60));
-
-				if (secDiff < 7200)
-					return "1 hour ago";
-
-				if (secDiff < 86400)
-					return string.Format("{0} hours ago", Math.Floor((double)secDiff / 3600));
-			}
-
-			if (dayDiff == 1)
-				return "yesterday";
-
-			if (dayDiff < 7)
-				return string.Format("{0} days ago", dayDiff);
-
-			if (dayDiff < 31)
-				return string.Format("{0} weeks ago", Math.Ceiling((double)dayDiff / 7));
-
-			return null;
+        public static string ToPrettyDateString(this DateTime d) {
+            TimeSpan ts = DateTime.Now.Subtract(d);
+            return PrettyDateCache.ToPrettyDateString(ts);
 		}
-
 
 		public static string With(this string format, params string[] args) {
 			return string.Format(format, args);
@@ -99,5 +84,66 @@ namespace GitAspx {
 		public static void PktFlush(this HttpResponseBase response) {
 			response.Write("0000");
 		}
+
+        public static string LeftJoin(this string[] values, string separator)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string value in values)
+            {
+                sb.Append(separator);
+                sb.Append(value);
+            }
+            return sb.ToString();
+        }
+
+        public static string RightJoin(this string[] values, string separator)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string value in values)
+            {
+                sb.Append(value);
+                sb.Append(separator);
+            }
+            return sb.ToString();
+        }
+
+        public static string LeftOrWhole(this string text, int maxLength)
+        {
+            return text == null ? "" : text.Substring(0, Math.Min(text.Length, maxLength));
+        }
+
+        public static IEnumerable<string> SplitLines(this string lines)
+        {
+            char b = '\0';
+            int start = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                char c = lines[i];
+                if (c == '\n')
+                {
+                    if (b == '\r')
+                    {
+                        start = i + 1;
+                        continue;
+                    }
+                    else
+                    {
+                        yield return lines.Substring(start, i - start);
+                        start = i + 1;
+                    }
+                }
+                else if (c == '\r')
+                {
+                    yield return lines.Substring(start, i - start);
+                    start = i + 1;
+                }
+                b = c;
+            }
+        }
+
+        public static string ToHtmlWithSpaces(this string asText)
+        {
+            return HttpContext.Current.Server.HtmlEncode(asText).Replace("  ", "&nbsp;&nbsp;").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+        }
 	}
 }

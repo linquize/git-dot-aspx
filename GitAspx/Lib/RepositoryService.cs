@@ -19,6 +19,7 @@
 #endregion
 
 namespace GitAspx.Lib {
+    using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
@@ -34,7 +35,7 @@ namespace GitAspx.Lib {
 			return appSettings.RepositoriesDirectory
 				.GetDirectories()
 				.Select(Repository.Open)
-				.Where(x => x!=null)
+				.Where(x => x != null && x.Name.EndsWith(".git", StringComparison.InvariantCultureIgnoreCase))
 				.ToList();
 		}
 

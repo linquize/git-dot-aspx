@@ -66,7 +66,30 @@ namespace GitAspx {
 			routes.MapRoute("get-idx-file", "{project}/objects/pack/pack-{filename}.idx", 
 				new {controller = "Dumb", action = "GetIdxFile"});
 
-			routes.MapRoute("project", "{project}");
+            routes.MapRoute("giturl", "{project}.git");
+            routes.MapRoute("tree-home", "{project}", new { controller = "TreeView", action = "Index" });
+            string folderPath = "{project}/tree/{tree}";
+            for (int i = 0; i < 16; i++)
+            {
+                routes.MapRoute("tree" + i, folderPath, new { controller = "TreeView", action = "Index" });
+                folderPath += "/{folder" + (i + 1) + "}";
+            }
+
+            string filePath = "{project}/blob/{tree}";
+            for (int i = 0; i < 16; i++)
+            {
+                routes.MapRoute("blob" + i, filePath, new { controller = "BlobView", action = "Index" });
+                filePath += "/{folder" + (i + 1) + "}";
+            }
+
+            string downloadPath = "{project}/download/{tree}";
+            for (int i = 0; i < 16; i++)
+            {
+                routes.MapRoute("download" + i, downloadPath, new { controller = "DownloadView", action = "Index" });
+                downloadPath += "/{folder" + (i + 1) + "}";
+            }
+
+            routes.MapRoute("culture", "culture/{culture}", new { controller = "Culture", action = "Index" });
 		}
 
 		protected void Application_Start() {

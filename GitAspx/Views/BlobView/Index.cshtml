@@ -1,0 +1,28 @@
+﻿@model GitAspx.ViewModels.BlobViewModel
+@using GitAspx;
+@{ViewBag.Title = Model.Title;}
+<div class="repositoryContainer">
+    <h1>@Model.Project@Model.PathSegments.LeftJoin(" / ")</h1>
+    
+    <div style="border: 1px solid black; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; overflow: auto">
+        <table>
+            <tr style="vertical-align: top">
+                <td style="font-weight: bold; background-color: white">
+                    @for (int lineNum = 1, maxLine = Model.File.Data.SplitLines().Count(); lineNum <= maxLine; lineNum++) {
+                        <div>@lineNum</div>
+                    }
+                </td>
+                <td style="width: 100%">
+                    @foreach (string line in Model.File.Data.SplitLines()) {
+                        if (line.Length == 0) {
+                            <div>&nbsp;</div>
+                        }
+                        else{
+                            <div style="width: 10000px">@(new MvcHtmlString(line.ToHtmlWithSpaces()))</div>
+                        }
+                    }
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

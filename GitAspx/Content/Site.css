@@ -17,7 +17,7 @@ body {
 
 .repositoryContainer, #footer { 
 	width:750px; 
-	margin:50px auto; 
+	margin:auto; 
 	overflow:hidden;
 }
 
@@ -30,7 +30,6 @@ h1 {
 	background-color:#eae4bd;
 	padding:7px;
 	position:relative;
-	z-index:100;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -75,7 +74,6 @@ ul#repositories li a:hover {
 	font-size:11px;
 	color:#000;
 	height:10px;
-	width:170px;
 	padding:3px 5px 5px 20px;
 	margin:0 0 5px 5px;
 	text-decoration:none;
@@ -97,6 +95,21 @@ ul#repositories li a:hover {
 .latest-commit {
 	color: #808080;
 	font-size: smaller;
+}
+
+a.hash {
+    text-decoration: none;
+    color: blue
+}
+
+a:hover.hash  {
+    text-decoration: underline;
+    color: purple;
+}
+
+.hint  {
+    background-color: lightyellow;
+    text-align: center;
 }
 
 #footer {
@@ -183,3 +196,13 @@ a.jqmClose {
 	width:15px;
 	height:15px;
 }
+
+.switchBar ul { list-style-type: none; margin-left : -40px  }
+.switchBar ul li { float: left; background-color: #EAE4BD; padding: 5px 10px }
+.switchBar ul li a { text-decoration: none; color: black; font-size: 13px }
+.switchBar ul li:hover { -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; background-color: #cbd6de }
+.switchBar ul li:hover ul { list-style-type: none; position: absolute; display: block; overflow: auto; z-index: 4; margin-left : -40px }
+.switchBar ul li:hover ul li { -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; float: none; border: 1px dotted #777777  }
+.switchBar ul li:hover ul li a { text-decoration: none; color: #6895B5; font-weight: bold; font-size: 13px }
+.switchBar ul li:hover ul li:hover { background-color: white }
+.switchBar ul li ul { display: none; }

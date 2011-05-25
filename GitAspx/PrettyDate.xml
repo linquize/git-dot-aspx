@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<cultures>
+  <culture>
+    <second less="60" format="just now" />
+    <minute less="2" format="1 minute ago" />
+    <minute less="120" format="@ minutes ago" />
+    <hour less="48" format="@ hours ago" />
+    <day less="14" format="@ days ago" />
+    <week less="9" format="@ weeks ago" />
+    <month less="24" format="@ months ago" />
+    <year less="9999" format="@ years ago" />
+  </culture>
+  <culture name="zh-TW">
+    <second less="60" format="剛才" />
+    <minute less="2" format="一分鐘前" />
+    <minute less="120" format="@ 分鐘前" />
+    <hour less="48" format="@ 小時前" />
+    <day less="14" format="@ 日前" />
+    <week less="9" format="@ 週前" />
+    <month less="24" format="@ 個月前" />
+    <year less="9999" format="@ 年前" />
+  </culture>
+  <culture name="zh-CN">
+    <second less="60" format="刚才" />
+    <minute less="2" format="一分钟前" />
+    <minute less="120" format="@ 分钟前" />
+    <hour less="48" format="@ 小时前" />
+    <day less="14" format="@ 日前" />
+    <week less="9" format="@ 周前" />
+    <month less="24" format="@ 个月前" />
+    <year less="9999" format="@ 年前" />
+  </culture>
+  <culture name="ja-JP">
+    <second less="60" format="今" />
+    <minute less="2" format="1分前" />
+    <minute less="120" format="@ 分前" />
+    <hour less="48" format="@ 時間前" />
+    <day less="14" format="@ 日前" />
+    <week less="9" format="@ 週間前" />
+    <month less="24" format="@ ヶ月前" />
+    <year less="9999" format="@ 年前" />
+  </culture>
+  <culture name="de-DE">
+    <second less="60" format="soeben" />
+    <minute less="2" format="1 Minute" />
+    <minute less="120" format="@ Minuten" />
+    <hour less="48" format="@ Stunden" />
+    <day less="14" format="@ Tags" />
+    <week less="9" format="@ Wochen" />
+    <month less="24" format="@ Monaten" />
+    <year less="9999" format="@ Jahren" />
+  </culture>
+</cultures>

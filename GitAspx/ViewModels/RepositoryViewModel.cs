@@ -12,7 +12,7 @@ namespace GitAspx.ViewModels {
 		}
 
 		public string Name {
-			get { return repository.Name; }
+            get { return repository.Name.Substring(0, repository.Name.Length - 4); }
 		}
 
 		private string CommitDate {
