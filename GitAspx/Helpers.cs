@@ -19,16 +19,14 @@
 #endregion
 
 namespace GitAspx {
-	using System;
-	using System.ComponentModel;
-	using System.Web;
-	using System.Web.Mvc;
-	using System.Web.Routing;
+    using System;
     using System.Collections.Generic;
     using System.Text;
-    using System.IO;
+    using System.Web;
+    using System.Web.Mvc;
+    using System.Web.Routing;
 
-	public static class Helpers {
+    public static class Helpers {
         static readonly string version, gitDllVersion, gitCoreDllVersion;
 
 		static Helpers() {
@@ -107,9 +105,11 @@ namespace GitAspx {
             return sb.ToString();
         }
 
-        public static string LeftOrWhole(this string text, int maxLength)
+        public static string Shorten(this string text, int maxLength)
         {
-            return text == null ? "" : text.Substring(0, Math.Min(text.Length, maxLength));
+            if (text == null) return string.Empty;
+            if (text.Length <= maxLength || maxLength <= 3) return text;
+            return text.Substring(0, maxLength - 3) + "...";
         }
 
         public static IEnumerable<string> SplitLines(this string lines)

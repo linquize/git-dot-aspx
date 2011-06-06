@@ -1,48 +1,66 @@
 ﻿@model GitAspx.ViewModels.TreeViewModel
 @using GitAspx;
+@using GitAspx.Properties;
 @{ViewBag.Title = Model.Title;}
+
 <div class="repositoryContainer">
     <table style="width: 100%">
         <tr>
             <td>
-                <div class="switchBar">            
+                <div class="switchBar">
                     <ul>
                         <li>
-                            <a href="javascript:void()">Branches (@Model.Repository.Branches.Count)</a>
-                            <ul>
+                            <a href="javascript:void()">@Resources.Branches (@Model.Repository.Branches.Count)</a>
+                            @if (Model.Repository.Branches.Any()) {
+                                <ul>
                                 @foreach (var lkvpBranch in Model.Repository.Branches) {
                                     <li><a href="@Url.Content("~/" + Model.Project + "/tree/" + lkvpBranch.Key + Model.PathSegments.LeftJoin("/"))" title="@lkvpBranch.Key">@lkvpBranch.Key</a></li>
                                 }
-                            </ul>
+                                </ul>
+                            }
                         </li>
                         <li>
-                            <a href="javascript:void()">Tags (@Model.Repository.Tags.Count)</a>
-                            <ul>
+                            <a href="javascript:void()">@Resources.Tags (@Model.Repository.Tags.Count)</a>
+                            @if (Model.Repository.Tags.Any()) {
+                                <ul>
                                 @foreach (var lkvpTag in Model.Repository.Tags) {
                                     <li><a href="@Url.Content("~/" + Model.Project + "/tree/" + lkvpTag.Key + Model.PathSegments.LeftJoin("/"))" title="@lkvpTag.Key">@lkvpTag.Key</a></li>
                                 }
-                            </ul>
+                                </ul>
+                            }
                         </li>
                         <li>
-                            <a href="javascript:void()">Parents (@Model.Branch.CurrentCommit.Ancestors.Count())</a>
-                            <ul>
-                                @foreach (var loCommit in Model.Branch.CurrentCommit.Ancestors) {
+                            <a href="javascript:void()">@Resources.Parents (@Model.Commit.Ancestors.Count())</a>
+                            @if (Model.Commit.Ancestors.Any()) {
+                                <ul>
+                                @foreach (var loCommit in Model.Commit.Ancestors) {
                                     <li>
                                         <a href="@Url.Content("~/" + Model.Project + "/tree/" + loCommit.Hash + Model.PathSegments.LeftJoin("/"))"
-                                            title="@loCommit.Hash"><span style="font-size: 10px; color: green">@loCommit.CommitDate.ToPrettyDateString(): </span>@loCommit.Message.LeftOrWhole(50)
+                                            title="@loCommit.Hash"><span style="font-size: 10px; color: green">@loCommit.CommitDate.ToPrettyDateString(): </span>@loCommit.Message.Shorten(50)
                                         </a>
                                     </li>
                                 }
-                            </ul>
+                                </ul>
+                            }
                         </li>
                         <li>
-                            <a href="javascript:void()">Cultures (5)</a>
+                            <a href="javascript:void()">@Resources.Cultures (5)</a>
                             <ul>
                                 <li><a href="@Url.Content("~/culture/en-US")">English</a></li>
                                 <li><a href="@Url.Content("~/culture/zh-TW")">繁體中文</a></li>
                                 <li><a href="@Url.Content("~/culture/zh-CN")">简体中文</a></li>
                                 <li><a href="@Url.Content("~/culture/ja-JP")">日本語</a></li>
                                 <li><a href="@Url.Content("~/culture/de-DE")">Deutsch</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void()">@Resources.Settngs</a>
+                            <ul>
+                                <li>
+                                    <a href="@Url.Content("~/settings/ShowTreeNodeDetails/" + !Model.PageSettings.ShowTreeNodeDetails)">
+                                        @(Model.PageSettings.ShowTreeNodeDetails ? Resources.HideTreeNodeDetails : Resources.ShowTreeNodeDetails)
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -62,42 +80,63 @@
                 <div style="background-color: #DDDDDD">@Model.Commit.CommitDate</div>
             </td>
             <td style="background-color: #D3F968">
-                <div><i>Branch</i> <b>@Model.Branch.Name</b></div>
+                <div><i>@Resources.Branch</i> <b>@Model.Branch.Name</b></div>
                 @if (Model.Tag != null) {
-                    <div><i>Tag</i> <b>@Model.Tag.Name</b></div>
+                    <div><i>@Resources.Tag</i> <b>@Model.Tag.Name</b></div>
                 }
-                <div><i>Commit</i> <a class="hash" href="@Url.Content("~/" + Model.Project + "/commit/" + Model.Commit.Hash + Model.PathSegments.LeftJoin("/"))"
-                    title="@Model.Commit.Hash">@Model.Commit.ShortHash</a></div>
-                <div><i>Parent</i> @if (Model.Commit.Ancestors.Any()) {
-                        var loFirstParent = Model.Commit.Ancestors.First();
-                    <a class="hash" href="@Url.Content("~/" + Model.Project + "/tree/" + loFirstParent.Hash + Model.PathSegments.LeftJoin("/"))"
-                        title="@loFirstParent.Hash">
-                        @loFirstParent.ShortHash @loFirstParent.CommitDate.ToPrettyDateString()
-                    </a>
-                    }
+                <div>
+                    <i>@Resources.Commit</i>
+                    <a class="hash" href="@Url.Content("~/" + Model.Project + "/commit/" + Model.Commit.Hash + Model.PathSegments.LeftJoin("/"))"
+                        title="@Model.Commit.Hash">@Model.Commit.ShortHash</a>
                 </div>
+                @if (Model.Commit.Ancestors.Any()) {
+                    var loFirstParent = Model.Commit.Ancestors.First();
+                    <div>
+                        <i>@Resources.Parent</i>
+                        <a class="hash" href="@Url.Content("~/" + Model.Project + "/tree/" + loFirstParent.Hash + Model.PathSegments.LeftJoin("/"))"
+                                title="@loFirstParent.Hash">
+                                @loFirstParent.ShortHash @loFirstParent.CommitDate.ToPrettyDateString()
+                        </a>
+                    </div>
+                }
             </td>
         </tr>
     </table>
     <h1>@Model.Project@Model.PathSegments.LeftJoin(" / ")</h1>
         
-    <div class="hint">Right click on the file to download, directory to download as zip</div>
+    <div class="hint">@Resources.RightClickToDownload</div>
     <ul id="repositories">
-		@foreach (var dir in Model.Directories) {
+		@foreach (var loDir in Model.Directories) {
+            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loDir.GetLastCommit() : null;
 			<li>
-				<a class="repository" href="@Url.Content("~/" + Model.Project + "/tree/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + dir.Name)"
-                    title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + dir.Name)">
-					@dir.Name
-					<span class="latest-commit">@dir.Trees.Count() directories, @dir.Leaves.Count() files</span>
+				<a class="repository" href="@Url.Content("~/" + Model.Project + "/tree/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loDir.Name)"
+                    title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loDir.Name)">
+					@loDir.Name
+					<span class="latest-commit">
+                        @loDir.Trees.Count() @Resources.Directories, @loDir.Leaves.Count() @Resources.Files
+                        @if (loCommit != null) {
+                            @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.CommitDate.ToPrettyDateString()
+                            @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.Message.Shorten(60)
+                            @:&nbsp;&nbsp;&nbsp;&nbsp;[@loCommit.Committer.Name]
+                        }
+                    </span>
 				</a>
 			</li>
         }
-		@foreach (var file in Model.Files) {
+		@foreach (var loFile in Model.Files) {
+            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loFile.GetLastCommit() : null;
 			<li>
-				<a class="repository" href="@Url.Content("~/" + Model.Project + "/blob/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + file.Name)"
-                    title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + file.Name)">
-					@file.Name
-					<span class="latest-commit">@file.Size bytes</span>
+				<a class="repository" href="@Url.Content("~/" + Model.Project + "/blob/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loFile.Name)"
+                    title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loFile.Name)">
+					@loFile.Name
+					<span class="latest-commit">
+                        @loFile.Size @Resources.Bytes
+                        @if (loCommit != null) {
+                            @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.CommitDate.ToPrettyDateString()
+                            @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.Message.Shorten(60)
+                            @:&nbsp;&nbsp;&nbsp;&nbsp;[@loCommit.Committer.Name]
+                        }
+                    </span>
 				</a>
 			</li>
 		}

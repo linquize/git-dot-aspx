@@ -20,22 +20,11 @@ namespace GitAspx.ViewModels {
 		}
 
 		private string Message {
-			get {
-				if(latestCommit != null) {
-					string message = latestCommit.Message;
-
-					if(message.Length > 60) {
-						return message.Substring(0, 57) + "...";
-					}
-
-					return message;
-				}
-				return string.Empty;
-			}
+			get { return latestCommit != null ? latestCommit.Message.Shorten(60) : string.Empty; }
 		}
 
 		public string LatestCommitInfo {
-			get {return Message + " - " + CommitDate; }
+			get { return Message + " - " + CommitDate; }
 		}
 	}
 }

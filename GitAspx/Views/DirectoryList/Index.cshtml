@@ -1,14 +1,30 @@
 ﻿@model GitAspx.ViewModels.DirectoryListViewModel
 @using GitAspx;
+@using GitAspx.Properties;
 @{ViewBag.Title = "git Repositories";}
+
+<div class="switchBar" style="position: absolute">
+    <ul>
+        <li>
+            <a href="javascript:void()">@Resources.Cultures (5)</a>
+            <ul>
+                <li><a href="@Url.Content("~/culture/en-US")">English</a></li>
+                <li><a href="@Url.Content("~/culture/zh-TW")">繁體中文</a></li>
+                <li><a href="@Url.Content("~/culture/zh-CN")">简体中文</a></li>
+                <li><a href="@Url.Content("~/culture/ja-JP")">日本語</a></li>
+                <li><a href="@Url.Content("~/culture/de-DE")">Deutsch</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
 
 <div class="repositoryContainer">
 	<h1>@Model.RepositoriesDirectory</h1>		
 
-	<a href="javascript:void(0)" class="createRepository">Create a new bare repository</a>
+	<a href="javascript:void(0)" class="createRepository">@Resources.CreateBareRepository</a>
 	<div class="clear"></div>
 
-    <div class="hint">Right click on the repository to show git url</div>
+    <div class="hint">@Resources.RightClickToShowGitUrl</div>
 	<ul id="repositories">
 		@foreach (var repository in Model.Repositories) {
 			<li>
@@ -23,14 +39,14 @@
 </div>
 
 <div class="jqmWindow" id="dialog">
-	<div class="title">Clone the repository using this command <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
+	<div class="title">@Resources.CloneRepositoryCommand <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">			
 		<pre>git clone <input type="text" id="repository-url" /></pre>
 	</div>
 </div>
 
 <div class="jqmWindow" id="createRepositoryDialog">
-	<div class="title">Create a new repository <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
+	<div class="title">@Resources.CreateRepository <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">
 	@using (Html.BeginForm("Create", "DirectoryList")) {
 		<input type="text" name="project" />@:.git<br />
@@ -60,5 +76,3 @@
         });
     });
 </script>
-
-<!--</asp:Content>-->

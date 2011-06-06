@@ -1,10 +1,30 @@
-﻿using System;
+﻿#region License
+
+// Copyright 2011 Linquize
+//  
+// Licensed under the Apache License, Version 2.0 (the "License"); 
+// you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at 
+// 
+// http://www.apache.org/licenses/LICENSE-2.0 
+// 
+// Unless required by applicable law or agreed to in writing, software 
+// distributed under the License is distributed on an "AS IS" BASIS, 
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+// See the License for the specific language governing permissions and 
+// limitations under the License.
+// 
+// The latest version of this file can be found at http://github.com/Linquize/git-dot-aspx
+
+#endregion
+
+using System;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using GitAspx.ViewModels;
 using GitSharp;
-using System.Globalization;
-using System.Threading;
 
 namespace GitAspx.Controllers
 {
@@ -27,10 +47,16 @@ namespace GitAspx.Controllers
         {
             try
             {
+                model.PageSettings = Session["PageSettings"] as Lib.PageSettings ?? new Lib.PageSettings();
+
                 string[] lsaFolderPath = { folder1, folder2, folder3, folder4, folder5, folder6, folder7, folder8, 
                                       folder9, folder10, folder11, folder12, folder13, folder14, folder15, folder16 };
 
-                try { Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo((string)Session["culture"]); }
+                try
+                {
+                    Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
+                    Properties.Resources.Culture = CultureInfo.GetCultureInfo((string)Session["culture"]);
+                }
                 catch { }
 
                 model.PathSegments = lsaFolderPath.TakeWhile(a => !string.IsNullOrWhiteSpace(a)).ToArray();
@@ -53,7 +79,7 @@ namespace GitAspx.Controllers
                     }
                     else
                         loCommit = loTag.Target as Commit;
-                    loBranch = model.Repository.Branches.FirstOrDefault(a => a.Value.CurrentCommit.Ancestors.Any(b => b.Hash == loCommit.Hash)).Value;
+                    loBranch = model.Repository.Branches.FirstOrDefault(a => a.Value.CurrentCommit.Hash == loCommit.Hash || a.Value.CurrentCommit.Ancestors.Any(b => b.Hash == loCommit.Hash)).Value;
                 }
                 else
                 {
