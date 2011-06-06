@@ -16,7 +16,7 @@ body {
 }
 
 .repositoryContainer, #footer { 
-	width:750px; 
+	width:1000px; 
 	margin:auto; 
 	overflow:hidden;
 }
