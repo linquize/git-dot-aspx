@@ -90,6 +90,7 @@ namespace GitAspx {
             }
 
             routes.MapRoute("culture", "culture/{culture}", new { controller = "Culture", action = "Index" });
+            routes.MapRoute("settings", "settings/{key}/{value}", new { controller = "PageSettings", action = "Index" });
 		}
 
 		protected void Application_Start() {

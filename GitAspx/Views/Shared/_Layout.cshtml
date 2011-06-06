@@ -1,4 +1,5 @@
 ﻿@using GitAspx;
+@using GitAspx.ViewModels;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -11,9 +12,11 @@
 <body>
     <div>
         <script type="text/javascript">
+            <!-- <![CDATA[
             if (jQuery.browser.msie && parseFloat(jQuery.browser.version) <= 7.0) {
                 document.write("<div style='font-size: 20px; color: red; text-align: center; background-color: white'>Please use Internet Explorer at least 8 or fail to use some features!</div>");
             }
+            ]]> -->
         </script>
         @RenderBody()
 		
@@ -21,6 +24,9 @@
 			<a href="http://github.com/linquize/git-dot-aspx">Powered by GitAspx @Helpers.Version</a>,
             <a href="http://github.com/linquize/GitSharp">GitSharp @Helpers.GitDllVersion</a>,
             <a href="http://github.com/linquize/GitSharp">GitSharp.Core @Helpers.GitCoreDllVersion</a>
+            @if (Model is WebBrowsingBaseViewModel) {
+                @((DateTime.Now - ((WebBrowsingBaseViewModel)Model).CtorTime).TotalMilliseconds.ToString("F1") + " ms")
+            }
 		</div>
     </div>
 </body>

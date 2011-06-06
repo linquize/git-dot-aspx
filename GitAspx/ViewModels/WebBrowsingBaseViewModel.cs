@@ -1,9 +1,18 @@
-﻿using GitSharp;
+﻿using System;
+using GitSharp;
 
 namespace GitAspx.ViewModels
 {
     public class WebBrowsingBaseViewModel
     {
+        public WebBrowsingBaseViewModel()
+        {
+            CtorTime = DateTime.Now;
+        }
+
+        public DateTime CtorTime { get; private set; }
+        public GitAspx.Lib.PageSettings PageSettings { get; set; }
+
         public Repository Repository { get; set; }
         public string Project { get; set; }
         public Branch Branch { get; set; }
