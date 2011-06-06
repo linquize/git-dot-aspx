@@ -4,12 +4,14 @@ Inspired by Grack (http://github.com/schacon/grack)
 
 This is largely untested, but has been developed with IIS7.5 under Windows 7 x64. 
 
-The version of GitSharp included is a custom build with some minor changes. Details to follow.
+The version of GitSharp included is a custom build with some minor changes.
+Current GitSharp.dll version is 0.3.99.0 (linquize)
+Current GitSharp.Core.dll version is 0.3.99.1 (linquize)
 
 Requirements:
-- VS2010 with .NET 4
-- ASP.NET MVC2
-- IIS7+
+- Visual Web Developer 2010 with .NET 4
+- ASP.NET MVC3 (Razor)
+- IIS5.1+ (for IIS5.1, add application settings: extension=*, path=c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll)
 
 Edit the web.config and change the "RepositoriesDirectory" app-setting to point to a directory containing git repositories.
 

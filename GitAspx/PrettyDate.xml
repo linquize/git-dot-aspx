@@ -45,7 +45,7 @@
     <minute less="2" format="1 Minute" />
     <minute less="120" format="@ Minuten" />
     <hour less="48" format="@ Stunden" />
-    <day less="14" format="@ Tags" />
+    <day less="14" format="@ Tage" />
     <week less="9" format="@ Wochen" />
     <month less="24" format="@ Monaten" />
     <year less="9999" format="@ Jahren" />
