@@ -31,4 +31,8 @@ git clone http://localhost:8000/Repo1.git
 
 Once cloned, push/pull work as expected.
 
+This fork includes a file viewer and file download function.
+If your source code contains *.cs, *.csproj, *.vb, *.vbproj, *.java, web.config, bin directory, etc...,
+please remove those extensions and "Hidden Segments" you need in IIS "Request Filtering".
+
 There are currently no tests (something I hope to rectify soon). If you run into a problem, the best way to troubleshoot is by using Fiddler to see the raw request/response data.
