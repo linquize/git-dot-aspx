@@ -107,7 +107,7 @@
     <div class="hint">@Resources.RightClickToDownload</div>
     <ul id="repositories">
 		@foreach (var loDir in Model.Directories) {
-            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loDir.GetLastCommit() : null;
+            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loDir.GetLastCommitBefore(Model.Commit) : null;
 			<li>
 				<a class="repository" href="@Url.Content("~/" + Model.Project + "/tree/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loDir.Name)"
                     title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loDir.Name)">
@@ -124,7 +124,7 @@
 			</li>
         }
 		@foreach (var loFile in Model.Files) {
-            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loFile.GetLastCommit() : null;
+            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loFile.GetLastCommitBefore(Model.Commit) : null;
 			<li>
 				<a class="repository" href="@Url.Content("~/" + Model.Project + "/blob/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loFile.Name)"
                     title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.RightJoin("/") + loFile.Name)">
