@@ -139,6 +139,8 @@ namespace GitAspx {
                 }
                 b = c;
             }
+
+            yield return lines.Substring(start);
         }
 
         public static string ToHtmlWithSpaces(this string asText)
