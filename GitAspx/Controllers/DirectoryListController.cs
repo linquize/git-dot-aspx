@@ -19,10 +19,12 @@
 #endregion
 
 namespace GitAspx.Controllers {
-	using System.Web.Mvc;
-	using GitAspx.Lib;
-	using GitAspx.ViewModels;
-	using System.Linq;
+    using System.Globalization;
+    using System.Linq;
+    using System.Threading;
+    using System.Web.Mvc;
+    using GitAspx.Lib;
+    using GitAspx.ViewModels;
 
 	public class DirectoryListController : Controller {
 		readonly RepositoryService repositories;
@@ -32,6 +34,13 @@ namespace GitAspx.Controllers {
 		}
 
 		public ActionResult Index() {
+            try
+            {
+                Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
+                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
+            }
+            catch { }
+
 			return View(new DirectoryListViewModel {
 				RepositoriesDirectory = repositories.GetRepositoriesDirectory().FullName,
 				Repositories = repositories.GetAllRepositories().Select(x => new RepositoryViewModel(x))

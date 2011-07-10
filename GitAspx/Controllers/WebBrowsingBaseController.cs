@@ -55,7 +55,7 @@ namespace GitAspx.Controllers
                 try
                 {
                     Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
-                    Properties.Resources.Culture = CultureInfo.GetCultureInfo((string)Session["culture"]);
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
                 }
                 catch { }
 
