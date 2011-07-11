@@ -143,6 +143,30 @@ namespace GitAspx {
             yield return lines.Substring(start);
         }
 
+        public static IEnumerable<string> SplitSlashes_OrEmpty(this string asText)
+        {
+            if (string.IsNullOrEmpty(asText))
+                yield break;
+
+            int i = 0, j = 0;
+            if (asText[0] == '/')
+                i = j = 1;
+            while (i < asText.Length - 1)
+            {
+                if (asText[i] == '/')
+                {
+                    yield return asText.Substring(j, i - j);
+                    j = i + 1;
+                }
+                i++;
+            }
+
+            if (asText[i] == '/')
+                yield return asText.Substring(j, asText.Length - j - 1);
+            else
+                yield return asText.Substring(j);
+        }
+
         public static string ToHtmlWithSpaces(this string asText)
         {
             return HttpContext.Current.Server.HtmlEncode(asText).Replace("  ", "&nbsp;&nbsp;").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");

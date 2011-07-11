@@ -41,16 +41,11 @@ namespace GitAspx.Controllers
             model = new TModel();
         }
 
-        public ActionResult Index(string project, string tree,
-            string folder1, string folder2, string folder3, string folder4, string folder5, string folder6, string folder7, string folder8,
-            string folder9, string folder10, string folder11, string folder12, string folder13, string folder14, string folder15, string folder16)
+        public ActionResult Index(string project, string tree, string path)
         {
             try
             {
                 model.PageSettings = Session["PageSettings"] as Lib.PageSettings ?? new Lib.PageSettings();
-
-                string[] lsaFolderPath = { folder1, folder2, folder3, folder4, folder5, folder6, folder7, folder8, 
-                                      folder9, folder10, folder11, folder12, folder13, folder14, folder15, folder16 };
 
                 try
                 {
@@ -59,7 +54,7 @@ namespace GitAspx.Controllers
                 }
                 catch { }
 
-                model.PathSegments = lsaFolderPath.TakeWhile(a => !string.IsNullOrWhiteSpace(a)).ToArray();
+                model.PathSegments = path.SplitSlashes_OrEmpty().ToArray();
                 model.Project = project;
                 model.Repository = new Repository(repositories.GetRepository(project + ".git").GitDirectory());
 
