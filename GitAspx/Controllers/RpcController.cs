@@ -28,7 +28,7 @@ namespace GitAspx.Controllers {
 
 	// Handles project/git-upload-pack and project/git-receive-pack
 	[SessionState(SessionStateBehavior.Disabled)]	
-	public class RpcController : BaseController {
+	public class RpcController : GitHttpBaseController {
 		readonly RepositoryService repositories;
 
 		public RpcController(RepositoryService repositories) {
@@ -37,6 +37,7 @@ namespace GitAspx.Controllers {
 
 		[HttpPost]
 		public ActionResult UploadPack(string project) {
+            project += ".git";
 			return ExecuteRpc(project, "upload-pack", repository => {
 				repository.Upload(GetInputStream(), Response.OutputStream);
 			});
@@ -44,6 +45,7 @@ namespace GitAspx.Controllers {
 
 		[HttpPost]
 		public ActionResult ReceivePack(string project) {
+            project += ".git";
 			return ExecuteRpc(project, "receive-pack", repository => {
 				repository.Receive(GetInputStream(), Response.OutputStream);
 			});

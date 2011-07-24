@@ -1,12 +1,11 @@
 namespace GitAspx.Controllers {
-	using System;
-	using System.IO;
+    using System.IO;
 	using System.Web.Mvc;
 	using System.Web.SessionState;
 	using GitAspx.Lib;
 
 	[SessionState(SessionStateBehavior.Disabled)]
-	public class DumbController : BaseController {
+	public class DumbController : GitHttpBaseController {
 		readonly RepositoryService repositories;
 
 		public DumbController(RepositoryService repositories) {
@@ -14,22 +13,27 @@ namespace GitAspx.Controllers {
 		}
 
 		public ActionResult GetTextFile(string project) {
+            project += ".git";
 			return WriteFile(project, "text/plain");
 		}
 
 		public ActionResult GetInfoPacks(string project) {
+            project += ".git";
 			return WriteFile(project, "text/plain; charset=utf-8");
 		}
 
 		public ActionResult GetLooseObject(string project) {
+            project += ".git";
 			return WriteFile(project, "application/x-git-loose-object");
 		}
 
 		public ActionResult GetPackFile(string project) {
+            project += ".git";
 			return WriteFile(project, "application/x-git-packed-objects");
 		}
 
 		public ActionResult GetIdxFile(string project) {
+            project += ".git";
 			return WriteFile(project, "application/x-git-packed-objects-toc");
 		}
 

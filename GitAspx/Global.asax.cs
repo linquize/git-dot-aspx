@@ -27,60 +27,62 @@ namespace GitAspx {
 	using StructureMap.Configuration.DSL;
 
 	public class MvcApplication : HttpApplication {
-		public static void RegisterRoutes(RouteCollection routes) {
-			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-			routes.IgnoreRoute("favicon.ico");
+        static void RegisterRoutes() {
+            RouteTable.Routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            RouteTable.Routes.IgnoreRoute("favicon.ico");
 
-			routes.MapRoute("DirectoryList", "", new {controller = "DirectoryList", action = "Index"});
-			routes.MapRoute("DirectoryListCreate", "Create", new { controller = "DirectoryList", action = "Create" });
+            MapSimpleRoute("DirectoryList", "", "DirectoryList", "Index");
+            MapSimpleRoute("DirectoryListCreate", "Create", "DirectoryList", "Create");
 
-			routes.MapRoute("info-refs", "{project}/info/refs",
-			                new {controller = "InfoRefs", action = "Execute"},
-			                new {method = new HttpMethodConstraint("GET")});
+            MapSimpleRouteGetOnly("info-refs", "{project}.git/info/refs", "InfoRefs", "Execute");
 
-			routes.MapRoute("upload-pack", "{project}/git-upload-pack",
-			                new {controller = "Rpc", action = "UploadPack"},
-			                new {method = new HttpMethodConstraint("POST")});
+            MapSimpleRoutePostOnly("upload-pack", "{project}.git/git-upload-pack", "Rpc", "UploadPack");
+            MapSimpleRoutePostOnly("receive-pack", "{project}.git/git-receive-pack", "Rpc", "ReceivePack");
 
+            MapSimpleRoute("get-info-packs", "{project}.git/info/packs", "Dumb", "GetInfoPacks");
+            MapSimpleRoute("get-text-file", "{project}.git/HEAD", "Dumb", "GetTextFile");
+            MapSimpleRoute("get-text-file2", "{project}.git/objects/info/alternates", "Dumb", "GetTextFile");
+            MapSimpleRoute("get-text-file3", "{project}.git/objects/info/http-alternates", "Dumb", "GetTextFile");
+            MapSimpleRoute("get-text-file4", "{project}.git/objects/info/{something}", "Dumb", "GetTextFile");
+            MapSimpleRoute("get-loose-object", "{project}.git/objects/{segment1}/{segment2}", "Dumb", "GetLooseObject");
+            MapSimpleRoute("get-pack-file", "{project}.git/objects/pack/pack-{filename}.pack", "Dumb", "GetPackFile");
+            MapSimpleRoute("get-idx-file", "{project}.git/objects/pack/pack-{filename}.idx", "Dumb", "GetIdxFile");
 
-			routes.MapRoute("receive-pack", "{project}/git-receive-pack",
-			                new {controller = "Rpc", action = "ReceivePack"},
-			                new {method = new HttpMethodConstraint("POST")});
+            MapSimpleRoute("giturl", "{project}.git");
 
-			// Dumb protocol
-			//routes.MapRoute("info-refs-dumb", "dumb/{project}/info/refs", new {controller = "Dumb", action = "InfoRefs"});
-			routes.MapRoute("get-text-file", "{project}/HEAD", new{controller = "Dumb", action="GetTextFile" });
-			routes.MapRoute("get-text-file2", "{project}/objects/info/alternates", new { controller = "Dumb", action = "GetTextFile" });
-			routes.MapRoute("get-text-file3", "{project}/objects/info/http-alternates", new { controller = "Dumb", action = "GetTextFile" });
+            MapSimpleRoute("tree-home", "{project}", "TreeView", "Index");
+            MapSimpleRoute("tree", "{project}/tree/{tree}/{*path}", "TreeView", "Index");
+            MapSimpleRoute("blob", "{project}/blob/{tree}/{*path}", "BlobView", "Index");
+            MapSimpleRoute("download", "{project}/download/{tree}/{*path}", "DownloadView", "Index");
 
-			routes.MapRoute("get-info-packs", "{project}/info/packs", new {controller = "Dumb", action = "GetInfoPacks"});
-
-			routes.MapRoute("get-text-file4", "{project}/objects/info/{something}", new {controller = "Dumb", action = "GetTextFile"});
-
-			routes.MapRoute("get-loose-object", "{project}/objects/{segment1}/{segment2}", 
-				new {controller = "Dumb", action = "GetLooseObject"});
-
-			routes.MapRoute("get-pack-file", "{project}/objects/pack/pack-{filename}.pack", 
-				new { controller = "Dumb", action = "GetPackFile" });
-			
-			routes.MapRoute("get-idx-file", "{project}/objects/pack/pack-{filename}.idx", 
-				new {controller = "Dumb", action = "GetIdxFile"});
-
-            routes.MapRoute("giturl", "{project}.git");
-
-            routes.MapRoute("tree-home", "{project}", new { controller = "TreeView", action = "Index" });
-            routes.MapRoute("tree", "{project}/tree/{tree}/{*path}", new { controller = "TreeView", action = "Index" });
-            routes.MapRoute("blob", "{project}/blob/{tree}/{*path}", new { controller = "BlobView", action = "Index" });
-            routes.MapRoute("download", "{project}/download/{tree}/{*path}", new { controller = "DownloadView", action = "Index" });
-
-            routes.MapRoute("culture", "culture/{culture}", new { controller = "Culture", action = "Index" });
-            routes.MapRoute("settings", "settings/{key}/{value}", new { controller = "PageSettings", action = "Index" });
+            MapSimpleRoute("culture", "culture/{culture}", "Culture", "Index");
+            MapSimpleRoute("settings", "settings/{key}/{value}", "PageSettings", "Index");
 		}
+
+        static void MapSimpleRoute(string asName, string asUrl)
+        {
+            RouteTable.Routes.MapRoute(asName, asUrl);
+        }
+
+        static void MapSimpleRoute(string asName, string asUrl, string asController, string asAction)
+        {
+            RouteTable.Routes.MapRoute(asName, asUrl, new { controller = asController, action = asAction });
+        }
+
+        static void MapSimpleRouteGetOnly(string asName, string asUrl, string asController, string asAction)
+        {
+            RouteTable.Routes.MapRoute(asName, asUrl, new { controller = asController, action = asAction }, new { method = new HttpMethodConstraint("GET") });
+        }
+
+        static void MapSimpleRoutePostOnly(string asName, string asUrl, string asController, string asAction)
+        {
+            RouteTable.Routes.MapRoute(asName, asUrl, new { controller = asController, action = asAction }, new { method = new HttpMethodConstraint("POST") });
+        }
 
 		protected void Application_Start() {
 			AreaRegistration.RegisterAllAreas();
 
-			RegisterRoutes(RouteTable.Routes);
+			RegisterRoutes();
 
 			ObjectFactory.Initialize(cfg => cfg.AddRegistry(new AppRegistry()));
 			ControllerBuilder.Current.SetControllerFactory(new StructureMapControllerFactory());

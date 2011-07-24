@@ -83,7 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\GitHttpBaseController.cs" />
     <Compile Include="Controllers\CultureController.cs" />
     <Compile Include="Controllers\DirectoryListController.cs" />
     <Compile Include="Controllers\DumbController.cs" />

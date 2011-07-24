@@ -29,7 +29,7 @@ namespace GitAspx.Lib {
 		protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType) {
 			var controller = (IController) ObjectFactory.GetInstance(controllerType);
 
-			var baseCon = controller as BaseController;
+			var baseCon = controller as GitHttpBaseController;
 			if (baseCon != null) {
 				baseCon.AppSettings = ObjectFactory.GetInstance<AppSettings>();
 			}

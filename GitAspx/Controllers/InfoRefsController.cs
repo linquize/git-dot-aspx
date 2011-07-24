@@ -27,7 +27,7 @@ namespace GitAspx.Controllers {
 
 	// Handles /project/info/refs
 	[SessionState(SessionStateBehavior.Disabled)]
-	public class InfoRefsController : BaseController {
+	public class InfoRefsController : GitHttpBaseController {
 		readonly RepositoryService repositories;
 
 		public InfoRefsController(RepositoryService repositories) {
@@ -35,6 +35,7 @@ namespace GitAspx.Controllers {
 		}
 
 		public ActionResult Execute(string project, string service) {
+            project += ".git";
 			service = GetServiceType(service);
 			bool isUsingSmartProtocol = service != null;
 
@@ -77,6 +78,7 @@ namespace GitAspx.Controllers {
 		}
 
 		ActionResult DumbInfoRefs(string project) {
+            project += ".git";
 			Response.WriteNoCache();
 
 			Response.ContentType = "text/plain; charset=utf-8";
