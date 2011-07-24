@@ -36,7 +36,7 @@ namespace GitAspx {
 		}
 
 		public static string Version {
-			get { return version;}
+			get { return version; }
 		}
 
         public static string GitDllVersion {
@@ -63,10 +63,6 @@ namespace GitAspx {
             return PrettyDateCache.ToPrettyDateString(ts);
 		}
 
-		public static string With(this string format, params string[] args) {
-			return string.Format(format, args);
-		}
-
 		public static void WriteNoCache(this HttpResponseBase response) {
 			response.AddHeader("Expires", "Fri, 01 Jan 1980 00:00:00 GMT");
 			response.AddHeader("Pragma", "no-cache");
@@ -83,7 +79,7 @@ namespace GitAspx {
 			response.Write("0000");
 		}
 
-        public static string LeftJoin(this string[] values, string separator)
+        public static string JoinLeft(this string[] values, string separator)
         {
             StringBuilder sb = new StringBuilder();
             foreach (string value in values)
@@ -94,7 +90,7 @@ namespace GitAspx {
             return sb.ToString();
         }
 
-        public static string RightJoin(this string[] values, string separator)
+        public static string JoinRight(this string[] values, string separator)
         {
             StringBuilder sb = new StringBuilder();
             foreach (string value in values)

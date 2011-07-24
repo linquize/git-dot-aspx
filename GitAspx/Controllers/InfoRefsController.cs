@@ -49,7 +49,7 @@ namespace GitAspx.Controllers {
 		}
 
 		ActionResult SmartInfoRefs(string service, string project) {
-			Response.ContentType = "application/x-git-{0}-advertisement".With(service);
+			Response.ContentType = string.Format("application/x-git-{0}-advertisement", service);
 			Response.WriteNoCache();
 
 			// Explicitly set the charset to empty string 

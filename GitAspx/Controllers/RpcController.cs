@@ -59,11 +59,11 @@ namespace GitAspx.Controllers {
 		}
 
 		ActionResult ExecuteRpc(string project, string rpc, Action<Repository> action) {
-			if (!HasAccess(rpc, checkContentType: true)) {
+			if (!HasAccess(rpc, true)) {
 				return new ForbiddenResult();
 			}
 
-			Response.ContentType = "application/x-git-{0}-result".With(rpc);
+			Response.ContentType = string.Format("application/x-git-{0}-result", rpc);
 			Response.WriteNoCache();
 
 			var repository = repositories.GetRepository(project);

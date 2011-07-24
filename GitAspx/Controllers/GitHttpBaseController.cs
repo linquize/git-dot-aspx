@@ -27,7 +27,7 @@ namespace GitAspx.Controllers {
 	public class GitHttpBaseController : Controller {
 		public AppSettings AppSettings { get; set; }
 
-		protected bool HasAccess(string rpc, bool checkContentType = false) {
+		protected bool HasAccess(string rpc, bool checkContentType) {
 			if (checkContentType && Request.ContentType != string.Format("application/x-git-{0}-request", rpc)) {
 				return false;
 			}
