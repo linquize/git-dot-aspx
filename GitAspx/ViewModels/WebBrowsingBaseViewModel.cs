@@ -1,4 +1,5 @@
 ﻿using System;
+using GitAspx.Lib;
 using GitSharp;
 
 namespace GitAspx.ViewModels
@@ -11,7 +12,7 @@ namespace GitAspx.ViewModels
         }
 
         public DateTime CtorTime { get; private set; }
-        public GitAspx.Lib.PageSettings PageSettings { get; set; }
+        public WebBrowsingSettings WebBrowsingSettings { get; set; }
 
         public Repository Repository { get; set; }
         public string Project { get; set; }

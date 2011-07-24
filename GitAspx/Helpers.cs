@@ -25,6 +25,7 @@ namespace GitAspx {
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
+    using GitAspx.Lib;
 
     public static class Helpers {
         static readonly string version, gitDllVersion, gitCoreDllVersion;
@@ -35,34 +36,48 @@ namespace GitAspx {
             gitCoreDllVersion = typeof(GitSharp.Core.AnyObjectId).Assembly.GetName().Version.ToString();
 		}
 
-		public static string Version {
-			get { return version; }
-		}
+        #region Software Version
+        public static string Version
+        {
+            get { return version; }
+        }
 
-        public static string GitDllVersion {
+        public static string GitDllVersion
+        {
             get { return gitDllVersion; }
         }
 
-        public static string GitCoreDllVersion {
+        public static string GitCoreDllVersion
+        {
             get { return gitCoreDllVersion; }
         }
+        
+        #endregion
 
-		public static string GetGitUrl(this UrlHelper urlHelper, string project) {
+        #region Get Url
+        public static string GetGitUrl(this UrlHelper urlHelper, string project)
+        {
             return urlHelper.RouteUrl("giturl", new RouteValueDictionary(new { project }),
                                       urlHelper.RequestContext.HttpContext.Request.Url.Scheme,
                                       urlHelper.RequestContext.HttpContext.Request.Url.Host);
-		}
+        } 
+        #endregion
 
-        public static string ToPrettyDateString(this DateTimeOffset d) {
+        #region DateTime/DateTimeOffset
+        public static string ToPrettyDateString(this DateTimeOffset d)
+        {
             TimeSpan ts = DateTimeOffset.Now.Subtract(d);
             return PrettyDateCache.ToPrettyDateString(ts);
         }
 
-        public static string ToPrettyDateString(this DateTime d) {
+        public static string ToPrettyDateString(this DateTime d)
+        {
             TimeSpan ts = DateTime.Now.Subtract(d);
             return PrettyDateCache.ToPrettyDateString(ts);
-		}
+        } 
+        #endregion
 
+		#region HttpReponseBase
 		public static void WriteNoCache(this HttpResponseBase response) {
 			response.AddHeader("Expires", "Fri, 01 Jan 1980 00:00:00 GMT");
 			response.AddHeader("Pragma", "no-cache");
@@ -77,8 +92,10 @@ namespace GitAspx {
 
 		public static void PktFlush(this HttpResponseBase response) {
 			response.Write("0000");
-		}
+		} 
+	#endregion
 
+        #region String
         public static string JoinLeft(this string[] values, string separator)
         {
             StringBuilder sb = new StringBuilder();
@@ -166,6 +183,17 @@ namespace GitAspx {
         public static string ToHtmlWithSpaces(this string asText)
         {
             return HttpContext.Current.Server.HtmlEncode(asText).Replace("  ", "&nbsp;&nbsp;").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+        } 
+        #endregion
+
+        #region Get Session
+        public static WebBrowsingSettings GetWebBrowsingSettings(this Controller aoController)
+        {
+            WebBrowsingSettings loSettings = aoController.Session["WebBrowsingSettings"] as WebBrowsingSettings;
+            if (loSettings == null)
+                aoController.Session["WebBrowsingSettings"] = loSettings = new WebBrowsingSettings();
+            return loSettings;
         }
+        #endregion
 	}
 }

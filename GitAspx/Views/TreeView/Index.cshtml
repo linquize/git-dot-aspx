@@ -46,19 +46,19 @@
                         <li>
                             <a href="javascript:void()">@Resources.Cultures (5)</a>
                             <ul>
-                                <li><a href="@Url.Content("~/culture/en-US")">English</a></li>
-                                <li><a href="@Url.Content("~/culture/zh-TW")">繁體中文</a></li>
-                                <li><a href="@Url.Content("~/culture/zh-CN")">简体中文</a></li>
-                                <li><a href="@Url.Content("~/culture/ja-JP")">日本語</a></li>
-                                <li><a href="@Url.Content("~/culture/de-DE")">Deutsch</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/en-US")">English</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/zh-TW")">繁體中文</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/zh-CN")">简体中文</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/ja-JP")">日本語</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/de-DE")">Deutsch</a></li>
                             </ul>
                         </li>
                         <li>
                             <a href="javascript:void()">@Resources.Settngs</a>
                             <ul>
                                 <li>
-                                    <a href="@Url.Content("~/settings/ShowTreeNodeDetails/" + !Model.PageSettings.ShowTreeNodeDetails)">
-                                        @(Model.PageSettings.ShowTreeNodeDetails ? Resources.HideTreeNodeDetails : Resources.ShowTreeNodeDetails)
+                                    <a href="@Url.Content("~/settings/ShowTreeNodeDetails/" + !Model.WebBrowsingSettings.ShowTreeNodeDetails)">
+                                        @(Model.WebBrowsingSettings.ShowTreeNodeDetails ? Resources.HideTreeNodeDetails : Resources.ShowTreeNodeDetails)
                                     </a>
                                 </li>
                             </ul>
@@ -107,7 +107,7 @@
     <div class="hint">@Resources.RightClickToDownload</div>
     <ul id="repositories">
 		@foreach (var loDir in Model.Directories) {
-            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loDir.GetLastCommitBefore(Model.Commit) : null;
+            var loCommit = Model.WebBrowsingSettings.ShowTreeNodeDetails ? loDir.GetLastCommitBefore(Model.Commit) : null;
 			<li>
 				<a class="repository" href="@Url.Content("~/" + Model.Project + "/tree/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loDir.Name)"
                     title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loDir.Name)">
@@ -124,7 +124,7 @@
 			</li>
         }
 		@foreach (var loFile in Model.Files) {
-            var loCommit = Model.PageSettings.ShowTreeNodeDetails ? loFile.GetLastCommitBefore(Model.Commit) : null;
+            var loCommit = Model.WebBrowsingSettings.ShowTreeNodeDetails ? loFile.GetLastCommitBefore(Model.Commit) : null;
 			<li>
 				<a class="repository" href="@Url.Content("~/" + Model.Project + "/blob/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loFile.Name)"
                     title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loFile.Name)">

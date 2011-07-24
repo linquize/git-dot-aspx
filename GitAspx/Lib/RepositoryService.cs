@@ -31,15 +31,15 @@ namespace GitAspx.Lib {
 			this.appSettings = appSettings;
 		}
 
-		public IEnumerable<Repository> GetAllRepositories() {
+		public IEnumerable<GitRepository> GetAllRepositories() {
 			return appSettings.RepositoriesDirectory
 				.GetDirectories()
-				.Select(Repository.Open)
+				.Select(GitRepository.Open)
 				.Where(x => x != null && x.Name.EndsWith(".git", StringComparison.InvariantCultureIgnoreCase))
 				.ToList();
 		}
 
-		public Repository GetRepository(string project) {
+		public GitRepository GetRepository(string project) {
 			var directory = Path.Combine(appSettings.RepositoriesDirectory.FullName, project);
 
 			if (!Directory.Exists(directory)) {
@@ -47,7 +47,7 @@ namespace GitAspx.Lib {
 			}
 
 			//return Repository.Open(directory);
-			return new Repository(new DirectoryInfo(directory));
+			return new GitRepository(new DirectoryInfo(directory));
 		}
 
 		public DirectoryInfo GetRepositoriesDirectory() {

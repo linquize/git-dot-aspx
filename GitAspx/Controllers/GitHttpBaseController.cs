@@ -19,9 +19,7 @@
 #endregion
 
 namespace GitAspx.Controllers {
-	using System.IO;
-	using System.Web;
-	using System.Web.Mvc;
+    using System.Web.Mvc;
 	using GitAspx.Lib;
 
 	public class GitHttpBaseController : Controller {
@@ -32,11 +30,11 @@ namespace GitAspx.Controllers {
 				return false;
 			}
 
-			if (rpc == Constants.ReceivePack) {
+			if (rpc == "receive-pack") {
 				return AppSettings.ReceivePack;
 			}
 
-			if (rpc == Constants.UploadPack) {
+			if (rpc == "upload-pack") {
 				return AppSettings.UploadPack;
 			}
 

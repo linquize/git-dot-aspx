@@ -23,6 +23,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web.Mvc;
+using GitAspx.Lib;
 using GitAspx.ViewModels;
 using GitSharp;
 
@@ -30,12 +31,12 @@ namespace GitAspx.Controllers
 {
     public class WebBrowsingBaseController<TModel> : Controller where TModel: WebBrowsingBaseViewModel, new()
     {
-        readonly GitAspx.Lib.RepositoryService repositories;
+        readonly RepositoryService repositories;
         readonly TModel model;
 
         public TModel Model { get { return model; } }
 
-        public WebBrowsingBaseController(GitAspx.Lib.RepositoryService repositories)
+        public WebBrowsingBaseController(RepositoryService repositories)
         {
             this.repositories = repositories;
             model = new TModel();
@@ -45,14 +46,8 @@ namespace GitAspx.Controllers
         {
             try
             {
-                model.PageSettings = Session["PageSettings"] as Lib.PageSettings ?? new Lib.PageSettings();
-
-                try
-                {
-                    Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
-                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
-                }
-                catch { }
+                model.WebBrowsingSettings = this.GetWebBrowsingSettings();
+                Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = model.WebBrowsingSettings.CultureObject;
 
                 model.PathSegments = path.SplitSlashes_OrEmpty().ToArray();
                 model.Project = project;

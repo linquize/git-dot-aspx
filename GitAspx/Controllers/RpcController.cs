@@ -58,7 +58,7 @@ namespace GitAspx.Controllers {
 			return Request.InputStream;
 		}
 
-		ActionResult ExecuteRpc(string project, string rpc, Action<Repository> action) {
+		ActionResult ExecuteRpc(string project, string rpc, Action<GitRepository> action) {
 			if (!HasAccess(rpc, true)) {
 				return new ForbiddenResult();
 			}

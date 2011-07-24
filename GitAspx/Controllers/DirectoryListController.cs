@@ -34,12 +34,7 @@ namespace GitAspx.Controllers {
 		}
 
 		public ActionResult Index() {
-            try
-            {
-                Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo((string)Session["culture"]);
-            }
-            catch { }
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = this.GetWebBrowsingSettings().CultureObject;
 
 			return View(new DirectoryListViewModel {
 				RepositoriesDirectory = repositories.GetRepositoriesDirectory().FullName,

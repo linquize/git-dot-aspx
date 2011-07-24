@@ -55,8 +55,7 @@ namespace GitAspx {
             MapSimpleRoute("blob", "{project}/blob/{tree}/{*path}", "BlobView", "Index");
             MapSimpleRoute("download", "{project}/download/{tree}/{*path}", "DownloadView", "Index");
 
-            MapSimpleRoute("culture", "culture/{culture}", "Culture", "Index");
-            MapSimpleRoute("settings", "settings/{key}/{value}", "PageSettings", "Index");
+            MapSimpleRoute("settings", "settings/{key}/{value}", "WebBrowsingSettings", "Index");
 		}
 
         static void MapSimpleRoute(string asName, string asUrl)
