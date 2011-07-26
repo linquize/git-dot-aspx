@@ -28,6 +28,11 @@
                 @((DateTime.Now - ((WebBrowsingBaseViewModel)Model).CtorTime).TotalMilliseconds.ToString("F1") + " ms")
             }
 		</div>
+        <div style="display: none">
+            @Environment.OSVersion, CLR @Environment.Version, 
+            @(Environment.Is64BitOperatingSystem ? "64-bit edition" : "32-bit edition"), 
+            @(Environment.Is64BitProcess ? "64-bit mode" : "32-bit mode")
+        </div>
     </div>
 </body>
 </html>
