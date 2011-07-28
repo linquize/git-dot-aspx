@@ -10,3 +10,6 @@ _ReSharper*
 *.suo
 *.cache
 TestResult.xml
+Web.config
+Web.Debug.config
+Web.Release.config
