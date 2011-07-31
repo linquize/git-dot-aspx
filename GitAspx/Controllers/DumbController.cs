@@ -1,61 +1,73 @@
-namespace GitAspx.Controllers {
+namespace GitAspx.Controllers
+{
     using System.IO;
-	using System.Web.Mvc;
-	using System.Web.SessionState;
-	using GitAspx.Lib;
+    using System.Web.Mvc;
+    using System.Web.SessionState;
+    using GitAspx.Lib;
 
-	[SessionState(SessionStateBehavior.Disabled)]
-	public class DumbController : GitHttpBaseController {
-		readonly RepositoryService repositories;
+    [SessionState(SessionStateBehavior.Disabled)]
+    public class DumbController : GitHttpBaseController
+    {
+        readonly RepositoryService repositories;
 
-		public DumbController(RepositoryService repositories) {
-			this.repositories = repositories;
-		}
+        public DumbController(RepositoryService repositories)
+        {
+            this.repositories = repositories;
+        }
 
-		public ActionResult GetTextFile(string project) {
-            project += ".git";
-			return WriteFile(project, "text/plain");
-		}
+        public ActionResult GetHead(string cat, string subcat, string project)
+        {
+            return WriteFile(cat, subcat, project, "HEAD", "text/plain");
+        }
 
-		public ActionResult GetInfoPacks(string project) {
-            project += ".git";
-			return WriteFile(project, "text/plain; charset=utf-8");
-		}
+        public ActionResult GetAlternates(string cat, string subcat, string project)
+        {
+            return WriteFile(cat, subcat, project, "objects/info/alternates", "text/plain");
+        }
 
-		public ActionResult GetLooseObject(string project) {
-            project += ".git";
-			return WriteFile(project, "application/x-git-loose-object");
-		}
+        public ActionResult GetHttpAlternates(string cat, string subcat, string project)
+        {
+            return WriteFile(cat, subcat, project, "objects/info/http-alternates", "text/plain");
+        }
 
-		public ActionResult GetPackFile(string project) {
-            project += ".git";
-			return WriteFile(project, "application/x-git-packed-objects");
-		}
+        public ActionResult GetOtherInfo(string cat, string subcat, string project, string something)
+        {
+            return WriteFile(cat, subcat, project, "objects/info/" + something, "text/plain");
+        }
 
-		public ActionResult GetIdxFile(string project) {
-            project += ".git";
-			return WriteFile(project, "application/x-git-packed-objects-toc");
-		}
+        public ActionResult GetInfoPacks(string cat, string subcat, string project)
+        {
+            return WriteFile(cat, subcat, project, "info/packs", "text/plain; charset=utf-8");
+        }
 
-		private ActionResult WriteFile(string project, string contentType) {
-			Response.WriteNoCache();
-			Response.ContentType = contentType;
-			var repo = repositories.GetRepository(project);
+        public ActionResult GetLooseObject(string cat, string subcat, string project, string segment1, string segment2)
+        {
+            return WriteFile(cat, subcat, project, "objects/" + segment1 + "/" + segment2, "application/x-git-loose-object");
+        }
 
-			string path = Path.Combine(repo.GitDirectory(), GetPathToRead(project));
+        public ActionResult GetPackFile(string cat, string subcat, string project, string filename)
+        {
+            return WriteFile(cat, subcat, project, "objects/pack/pack-" + filename + ".pack", "application/x-git-packed-objects");
+        }
 
-			if(! System.IO.File.Exists(path)) {
-				return new NotFoundResult();
-			}
+        public ActionResult GetIdxFile(string cat, string subcat, string project, string filename)
+        {
+            return WriteFile(cat, subcat, project, "objects/pack/pack-" + filename + ".idx", "application/x-git-packed-objects-toc");
+        }
 
-			Response.WriteFile(path);
+        private ActionResult WriteFile(string cat, string subcat, string project, string path, string contentType)
+        {
+            Response.WriteNoCache();
+            Response.ContentType = contentType;
 
-			return new EmptyResult();
-		}
+            var repo = repositories.GetRepository(cat, subcat, project);
+            string path2 = Path.Combine(repo.GitDirectory(), path.Replace('/', Path.DirectorySeparatorChar));
 
-		private string GetPathToRead(string project) {
-			int index = Request.Url.PathAndQuery.IndexOf(project) + project.Length + 1;
-			return Request.Url.PathAndQuery.Substring(index);
-		}
-	}
+            if (!System.IO.File.Exists(path2))
+                return new NotFoundResult();
+
+            Response.WriteFile(path2);
+            return new EmptyResult();
+        }
+    }
 }

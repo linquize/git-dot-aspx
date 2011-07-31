@@ -27,8 +27,9 @@ namespace GitAspx.Lib {
 		public DirectoryInfo RepositoriesDirectory { get; set; }
 		public bool UploadPack { get; set; }
 		public bool ReceivePack { get; set; }
+        public int RepositoryLevel { get; set; }
 
-		public static AppSettings FromAppConfig() {
+        public static AppSettings FromAppConfig() {
 			var settings = new AppSettings();
 
 			var path = ConfigurationManager.AppSettings["RepositoriesDirectory"];
@@ -44,20 +45,16 @@ namespace GitAspx.Lib {
 
 			settings.RepositoriesDirectory = new DirectoryInfo(path);
 
-
 			var uploadPackRaw = ConfigurationManager.AppSettings["UploadPack"];
 			var receivePackRaw = ConfigurationManager.AppSettings["ReceivePack"];
 
-			bool uploadpack;
-			bool receivePack;
+			bool uploadpack, receivePack;
+			settings.UploadPack = bool.TryParse(uploadPackRaw, out uploadpack) ? uploadpack : false;
+            settings.ReceivePack = bool.TryParse(receivePackRaw, out receivePack) ? receivePack : false;
 
-			if (!string.IsNullOrEmpty(uploadPackRaw) && bool.TryParse(uploadPackRaw, out uploadpack)) {
-				settings.UploadPack = uploadpack;
-			}
-
-			if (!string.IsNullOrEmpty(receivePackRaw) && bool.TryParse(receivePackRaw, out receivePack)) {
-				settings.ReceivePack = receivePack;
-			}
+            string lsRepositoryLevel = ConfigurationManager.AppSettings["RepositoryLevel"];
+            int liRepositoryLevel;
+            settings.RepositoryLevel = int.TryParse(lsRepositoryLevel, out liRepositoryLevel) ? liRepositoryLevel : 1;
 
 			return settings;
 		}

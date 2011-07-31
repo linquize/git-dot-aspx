@@ -18,36 +18,42 @@
 
 #endregion
 
-namespace GitAspx.Controllers {
-    using System.Globalization;
+namespace GitAspx.Controllers
+{
     using System.Linq;
     using System.Threading;
     using System.Web.Mvc;
     using GitAspx.Lib;
     using GitAspx.ViewModels;
 
-	public class DirectoryListController : Controller {
-		readonly RepositoryService repositories;
+    public class DirectoryListController : Controller
+    {
+        readonly RepositoryService repositories;
 
-		public DirectoryListController(RepositoryService repositories) {
-			this.repositories = repositories;
-		}
+        public DirectoryListController(RepositoryService repositories)
+        {
+            this.repositories = repositories;
+        }
 
-		public ActionResult Index() {
+        public ActionResult Index(string cat, string subcat)
+        {
             Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = this.GetWebBrowsingSettings().CultureObject;
 
-			return View(new DirectoryListViewModel {
-				RepositoriesDirectory = repositories.GetRepositoriesDirectory().FullName,
-				Repositories = repositories.GetAllRepositories().Select(x => new RepositoryViewModel(x))
-			});
-		}
+            return View(new DirectoryListViewModel
+            {
+                RepositoriesDirectory = repositories.GetRepositoriesDirectory().FullName,
+                RepositoryCategory = repositories.CombineRepositoryCat(cat, subcat),
+                Repositories = repositories.GetAllRepositories(cat, subcat).Select(x => new RepositoryViewModel(x))
+            });
+        }
 
-		[HttpPost]
-		public ActionResult Create(string project) {
-			if (!string.IsNullOrEmpty(project)) {
-				repositories.CreateRepository(project);
-			}
-			return RedirectToAction("Index");
-		}
-	}
+        [HttpPost]
+        public ActionResult Create(string cat, string subcat, string project)
+        {
+            if (!string.IsNullOrEmpty(project))
+                repositories.CreateRepository(cat, subcat, project);
+
+            return RedirectToAction("Index");
+        }
+    }
 }

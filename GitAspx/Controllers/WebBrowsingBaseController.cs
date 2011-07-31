@@ -42,7 +42,7 @@ namespace GitAspx.Controllers
             model = new TModel();
         }
 
-        public ActionResult Index(string project, string tree, string path)
+        public ActionResult Index(string cat, string subcat, string project, string tree, string path)
         {
             try
             {
@@ -50,8 +50,8 @@ namespace GitAspx.Controllers
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = model.WebBrowsingSettings.CultureObject;
 
                 model.PathSegments = path.SplitSlashes_OrEmpty().ToArray();
-                model.Project = project;
-                model.Repository = new Repository(repositories.GetRepository(project + ".git").GitDirectory());
+                model.Project = repositories.CombineRepositoryName(cat, subcat, project);
+                model.Repository = repositories.GetBackendRepository(cat, subcat, project);
 
                 if (string.IsNullOrWhiteSpace(tree))
                     tree = model.Repository.CurrentBranch.Name;

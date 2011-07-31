@@ -1,30 +1,41 @@
-namespace GitAspx.ViewModels {
-	using System;
-	using GitAspx.Lib;
+namespace GitAspx.ViewModels
+{
+    using GitAspx.Lib;
 
-	public class RepositoryViewModel {
-		private GitRepository repository;
-		private CommitInfo latestCommit;
+    public class RepositoryViewModel
+    {
+        private GitRepository repository;
+        private CommitInfo latestCommit;
 
-		public RepositoryViewModel(GitRepository repository) {
-			this.repository = repository;
-			this.latestCommit = repository.GetLatestCommit();
-		}
+        public RepositoryViewModel(GitRepository repository)
+        {
+            this.repository = repository;
+            this.latestCommit = repository.GetLatestCommit();
+        }
 
-		public string Name {
-            get { return repository.Name.Substring(0, repository.Name.Length - 4); }
-		}
+        public string Name
+        {
+            get { return repository.Name; }
+        }
 
-		private string CommitDate {
-			get { return latestCommit != null ? latestCommit.Date.ToPrettyDateString() : string.Empty; }
-		}
+        public string FullName
+        {
+            get { return repository.FullName; }
+        }
 
-		private string Message {
-			get { return latestCommit != null ? latestCommit.Message.Shorten(60) : string.Empty; }
-		}
+        private string CommitDate
+        {
+            get { return latestCommit != null ? latestCommit.Date.ToPrettyDateString() : string.Empty; }
+        }
 
-		public string LatestCommitInfo {
-			get { return Message + " - " + CommitDate; }
-		}
-	}
+        private string Message
+        {
+            get { return latestCommit != null ? latestCommit.Message.Shorten(60) : string.Empty; }
+        }
+
+        public string LatestCommitInfo
+        {
+            get { return Message + " - " + CommitDate; }
+        }
+    }
 }

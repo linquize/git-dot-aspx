@@ -18,79 +18,88 @@
 
 #endregion
 
-namespace GitAspx.Controllers {
-	using System.IO;
-	using System.Text;
-	using System.Web.Mvc;
-	using System.Web.SessionState;
-	using GitAspx.Lib;
+namespace GitAspx.Controllers
+{
+    using System.IO;
+    using System.Text;
+    using System.Web.Mvc;
+    using System.Web.SessionState;
+    using GitAspx.Lib;
 
-	// Handles /project/info/refs
-	[SessionState(SessionStateBehavior.Disabled)]
-	public class InfoRefsController : GitHttpBaseController {
-		readonly RepositoryService repositories;
+    // Handles /project/info/refs
+    [SessionState(SessionStateBehavior.Disabled)]
+    public class InfoRefsController : GitHttpBaseController
+    {
+        readonly RepositoryService repositories;
 
-		public InfoRefsController(RepositoryService repositories) {
-			this.repositories = repositories;
-		}
+        public InfoRefsController(RepositoryService repositories)
+        {
+            this.repositories = repositories;
+        }
 
-		public ActionResult Execute(string project, string service) {
-            project += ".git";
-			service = GetServiceType(service);
-			bool isUsingSmartProtocol = service != null;
+        public ActionResult Execute(string cat, string subcat, string project, string service)
+        {
+            service = GetServiceType(service);
+            bool isUsingSmartProtocol = service != null;
 
-			// Service has been specified - we're working with the smart protocol
-			if(isUsingSmartProtocol) {
-				return SmartInfoRefs(service, project);
-			}
+            // Service has been specified - we're working with the smart protocol
+            if (isUsingSmartProtocol)
+            {
+                return SmartInfoRefs(service, cat, subcat, project);
+            }
 
-			// working with the dumb protocol.
-			return DumbInfoRefs(project);
-		}
+            // working with the dumb protocol.
+            return DumbInfoRefs(cat, subcat, project);
+        }
 
-		ActionResult SmartInfoRefs(string service, string project) {
-			Response.ContentType = string.Format("application/x-git-{0}-advertisement", service);
-			Response.WriteNoCache();
+        ActionResult SmartInfoRefs(string service, string cat, string subcat, string project)
+        {
+            Response.ContentType = string.Format("application/x-git-{0}-advertisement", service);
+            Response.WriteNoCache();
 
-			// Explicitly set the charset to empty string 
-			// We do this as certain git clients (jgit) require it to be empty.
-			// If we don't set it, then it defaults to utf-8, which breaks jgit's logic for detecting smart http
-			Response.Charset = ""; 
+            // Explicitly set the charset to empty string 
+            // We do this as certain git clients (jgit) require it to be empty.
+            // If we don't set it, then it defaults to utf-8, which breaks jgit's logic for detecting smart http
+            Response.Charset = "";
 
-			var repository = repositories.GetRepository(project);
+            var repository = repositories.GetRepository(cat, subcat, project);
 
-			if (repository == null) {
-				return new NotFoundResult();
-			}
+            if (repository == null)
+            {
+                return new NotFoundResult();
+            }
 
-			Response.PktWrite("# service=git-{0}\n", service);
-			Response.PktFlush();
+            Response.PktWrite("# service=git-{0}\n", service);
+            Response.PktFlush();
 
-			if (service == "upload-pack") {
-				repository.AdvertiseUploadPack(Response.OutputStream);
-			}
+            if (service == "upload-pack")
+            {
+                repository.AdvertiseUploadPack(Response.OutputStream);
+            }
 
-			else if (service == "receive-pack") {
-				repository.AdvertiseReceivePack(Response.OutputStream);
-			}
+            else if (service == "receive-pack")
+            {
+                repository.AdvertiseReceivePack(Response.OutputStream);
+            }
 
-			return new EmptyResult();
-		}
+            return new EmptyResult();
+        }
 
-		ActionResult DumbInfoRefs(string project) {
-            project += ".git";
-			Response.WriteNoCache();
+        ActionResult DumbInfoRefs(string cat, string subcat, string project)
+        {
+            Response.WriteNoCache();
 
-			Response.ContentType = "text/plain; charset=utf-8";
-			var repository = repositories.GetRepository(project);
+            Response.ContentType = "text/plain; charset=utf-8";
+            var repository = repositories.GetRepository(cat, subcat, project);
 
-			if(repository == null) {
-				return new NotFoundResult();
-			}
+            if (repository == null)
+            {
+                return new NotFoundResult();
+            }
 
-			repository.UpdateServerInfo();
-			Response.WriteFile(Path.Combine(repository.GitDirectory(), "info/refs"));
-			return new EmptyResult();
-		}
-	}
+            repository.UpdateServerInfo();
+            Response.WriteFile(Path.Combine(repository.GitDirectory(), "info/refs"));
+            return new EmptyResult();
+        }
+    }
 }

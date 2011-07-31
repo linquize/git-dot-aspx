@@ -36,7 +36,7 @@ namespace GitAspx.Tests {
 
 		[Test]
 		public void Gets_upload_pack_advertisement() {
-			controller.Execute("test.git", "git-upload-pack");
+			controller.Execute(null, null, "test.git", "git-upload-pack");
 			controller.Response.ContentType.ShouldContain("application/x-git-upload-pack-advertisement");
 
 			var body = controller.Response.OutputStream.GetString();
@@ -49,7 +49,7 @@ namespace GitAspx.Tests {
 
 		[Test]
 		public void Gets_receive_pack_advertisement() {
-			controller.Execute("test.git", "git-receive-pack");
+			controller.Execute(null, null, "test.git", "git-receive-pack");
 
 			controller.Response.ContentType
 				.ShouldContain("application/x-git-receive-pack-advertisement");
@@ -65,7 +65,7 @@ namespace GitAspx.Tests {
 
 		[Test]
 		public void Returns_404_when_repository_not_found() {
-			var result = controller.Execute("NoSuchProject", "git-receive-pack");
+			var result = controller.Execute(null, null, "NoSuchProject", "git-receive-pack");
 			result.ShouldBe<NotFoundResult>();
 		}
 	}

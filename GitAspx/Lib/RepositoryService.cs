@@ -18,52 +18,116 @@
 
 #endregion
 
-namespace GitAspx.Lib {
+namespace GitAspx.Lib
+{
     using System;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using GitSharp;
 
-	public class RepositoryService {
-		readonly AppSettings appSettings;
+    public class RepositoryService
+    {
+        readonly AppSettings appSettings;
 
-		public RepositoryService(AppSettings appSettings) {
-			this.appSettings = appSettings;
-		}
+        public bool SingleRepositoryOnly
+        {
+            get { return appSettings.RepositoryLevel == 0; }
+        }
 
-		public IEnumerable<GitRepository> GetAllRepositories() {
-			return appSettings.RepositoriesDirectory
-				.GetDirectories()
-				.Select(GitRepository.Open)
-				.Where(x => x != null && x.Name.EndsWith(".git", StringComparison.InvariantCultureIgnoreCase))
-				.ToList();
-		}
+        public RepositoryService(AppSettings appSettings)
+        {
+            this.appSettings = appSettings;
+        }
 
-		public GitRepository GetRepository(string project) {
-			var directory = Path.Combine(appSettings.RepositoriesDirectory.FullName, project);
+        public string CombineRepositoryName(string cat, string subcat, string project)
+        {
+            if (appSettings.RepositoryLevel == 0)
+                return "";
+            if (appSettings.RepositoryLevel == 1)
+                return project ?? "";
+            if (appSettings.RepositoryLevel == 2)
+                return cat + "/" + project;
+            if (appSettings.RepositoryLevel == 3)
+                return cat + "/" + subcat + "/" + project;
+            throw new NotSupportedException();
+        }
 
-			if (!Directory.Exists(directory)) {
-				return null;
-			}
+        string CombinePhysicalDir(string cat, string subcat, string project)
+        {
+            if (appSettings.RepositoryLevel == 0)
+                return appSettings.RepositoriesDirectory.FullName;
+            if (appSettings.RepositoryLevel == 1)
+                return Path.Combine(appSettings.RepositoriesDirectory.FullName, project + ".git");
+            if (appSettings.RepositoryLevel == 2)
+                return Path.Combine(appSettings.RepositoriesDirectory.FullName, cat, project + ".git");
+            if (appSettings.RepositoryLevel == 3)
+                return Path.Combine(appSettings.RepositoriesDirectory.FullName, cat, subcat, project + ".git");
+            throw new NotSupportedException();
+        }
 
-			//return Repository.Open(directory);
-			return new GitRepository(new DirectoryInfo(directory));
-		}
+        public string CombineRepositoryCat(string cat, string subcat)
+        {
+            if (appSettings.RepositoryLevel == 0)
+                return "";
+            if (appSettings.RepositoryLevel == 1)
+                return "";
+            if (appSettings.RepositoryLevel == 2)
+                return cat ?? "";
+            if (appSettings.RepositoryLevel == 3)
+                return cat + "/" + subcat;
+            throw new NotSupportedException();
+        }
 
-		public DirectoryInfo GetRepositoriesDirectory() {
-			return appSettings.RepositoriesDirectory;
-		}
+        public IEnumerable<GitRepository> GetAllRepositories(string cat, string subcat)
+        {
+            return GetAllRepositories(CombineRepositoryCat(cat, subcat));
+        }
 
-		public void CreateRepository(string project) {
-			var directory = Path.Combine(appSettings.RepositoriesDirectory.FullName, project + ".git");
+        IEnumerable<GitRepository> GetAllRepositories(string prefix)
+        {
+            string prefix2 = Path.Combine(prefix.SplitSlashes_OrEmpty().ToArray());
+            prefix2 = prefix2.Length > 0 ? prefix2 + Path.DirectorySeparatorChar : prefix2;
+            return appSettings.RepositoriesDirectory
+                .GetDirectories(prefix2 + "*")
+                .Where(x => x.Name.EndsWith(".git", StringComparison.InvariantCultureIgnoreCase))
+                .Select(a => GitRepository.Open(a, appSettings.RepositoriesDirectory.FullName))
+                .ToList();
+        }
 
-			if (!Directory.Exists(directory)) {
-				Directory.CreateDirectory(directory);
+        public GitRepository GetRepository(string cat, string subcat, string project)
+        {
+            var directory = CombinePhysicalDir(cat, subcat, project);
 
-				using(var repository = new GitSharp.Core.Repository(new DirectoryInfo(directory))) {
-					repository.Create(true);
-				}
-			}
-		}
-	}
+            if (!Directory.Exists(directory))
+                return null;
+
+            return new GitRepository(new DirectoryInfo(directory), appSettings.RepositoriesDirectory.FullName);
+        }
+
+        public Repository GetBackendRepository(string cat, string subcat, string project)
+        {
+            return new Repository(CombinePhysicalDir(cat, subcat, project));
+        }
+
+        public DirectoryInfo GetRepositoriesDirectory()
+        {
+            return appSettings.RepositoriesDirectory;
+        }
+
+        public void CreateRepository(string cat, string subcat, string project)
+        {
+            var directory = CombinePhysicalDir(cat, subcat, project);
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+
+                using (var repository = new GitSharp.Core.Repository(new DirectoryInfo(directory)))
+                {
+                    repository.Create(true);
+                }
+            }
+        }
+    }
 }

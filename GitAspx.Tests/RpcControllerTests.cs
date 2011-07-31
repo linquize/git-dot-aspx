@@ -18,20 +18,20 @@ namespace GitAspx.Tests {
 
 		[Test]
 		public void NoAccess_to_UploadPack_when_incorrect_content_type() {
-			var result = controller.UploadPack("test.git");
+			var result = controller.UploadPack(null, null, "test.git");
 			result.ShouldBe<ForbiddenResult>();
 		}
 
 		[Test]
 		public void NoAccess_to_ReceivePack_when_incorrect_content_type() {
-			var result = controller.ReceivePack("test.git");
+			var result = controller.ReceivePack(null, null, "test.git");
 			result.ShouldBe<ForbiddenResult>();
 		}
 
 		[Test]
 		public void Not_found_when_wrong_path() {
 			controller.Request.ContentType = "application/x-git-receive-pack-request";
-			var result = controller.ReceivePack("no-such-project");
+			var result = controller.ReceivePack(null, null, "no-such-project");
 			result.ShouldBe<NotFoundResult>();
 		}
 

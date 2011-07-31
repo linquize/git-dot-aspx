@@ -83,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\GitHttpBaseController.cs" />
-    <Compile Include="Controllers\CultureController.cs" />
     <Compile Include="Controllers\DirectoryListController.cs" />
     <Compile Include="Controllers\DumbController.cs" />
     <Compile Include="Controllers\TreeViewController.cs" />
@@ -242,29 +241,26 @@
   </Target>
   <!-- Make sure web.config will be there even for package/publish -->
   <Target Name="CopyWebTemplateConfig" BeforeTargets="Build">
-    <Copy SourceFiles="Web.Template.config" DestinationFiles="Web.config"/>
+    <Copy SourceFiles="Web.Template.config" DestinationFiles="Web.config" />
     <TransformXml Source="Web.Template.config" Transform="Web.$(Configuration).config" Destination="Web.config" />
   </Target>
-
   <PropertyGroup>
     <PrepareForRunDependsOn>
       $(PrepareForRunDependsOn);
       UpdateWebConfigBeforeRun;
     </PrepareForRunDependsOn>
   </PropertyGroup>
-
   <!-- This target will run right before you run your app in Visual Studio -->
   <Target Name="UpdateWebConfigBeforeRun">
-    <Message Text="Configuration: $(Configuration): Web.$(Configuration).config"/>
+    <Message Text="Configuration: $(Configuration): Web.$(Configuration).config" />
     <TransformXml Source="Web.Template.config" Transform="Web.$(Configuration).config" Destination="Web.config" />
   </Target>
-
   <!-- Exclude the config template files from the created package -->
   <Target Name="ExcludeCustomConfigTransformFiles" BeforeTargets="ExcludeFilesFromPackage">
     <ItemGroup>
-      <ExcludeFromPackageFiles Include="Web.Template.config;Web.*.config"/>
+      <ExcludeFromPackageFiles Include="Web.Template.config;Web.*.config" />
     </ItemGroup>
-    <Message Text="ExcludeFromPackageFiles: @(ExcludeFromPackageFiles)" Importance="high"/>
+    <Message Text="ExcludeFromPackageFiles: @(ExcludeFromPackageFiles)" Importance="high" />
   </Target>
   <ProjectExtensions>
     <VisualStudio>
