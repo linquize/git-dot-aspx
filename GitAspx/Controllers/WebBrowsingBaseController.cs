@@ -69,14 +69,16 @@ namespace GitAspx.Controllers
                     }
                     else
                         loCommit = loTag.Target as Commit;
-                    loBranch = model.Repository.Branches.FirstOrDefault(a => a.Value.CurrentCommit.Hash == loCommit.Hash || a.Value.CurrentCommit.Ancestors.Any(b => b.Hash == loCommit.Hash)).Value;
                 }
                 else
                 {
                     loCommit = loBranch.CurrentCommit;
                 }
-                model.Branch = loBranch;
-                model.Tag = model.Repository.Tags.FirstOrDefault(a => a.Value.Target.Hash == loCommit.Hash).Value;
+
+                model.Branches = model.Repository.Branches
+                    .Where(a => a.Value.CurrentCommit.Hash == loCommit.Hash || a.Value.CurrentCommit.Ancestors.Any(b => b.Hash == loCommit.Hash))
+                    .Select(a => a.Value);
+                model.Tags = model.Repository.Tags.Where(a => a.Value.Target.Hash == loCommit.Hash).Select(a => a.Value);
                 model.Commit = loCommit;
                 model.RootTree = loCommit.Tree;
                 model.TreeName = tree;

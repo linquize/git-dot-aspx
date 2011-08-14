@@ -80,16 +80,34 @@
                 <div style="background-color: #DDDDDD">@Model.Commit.CommitDate</div>
             </td>
             <td style="background-color: #D3F968">
-                <div><i>@Resources.Branch</i> <b>@Model.Branch.Name</b></div>
-                @if (Model.Tag != null) {
-                    <div><i>@Resources.Tag</i> <b>@Model.Tag.Name</b></div>
-                }
+                <div>
+                    <i>@Resources.Branch</i>
+                    @foreach (var loBranch in Model.Branches)
+                    {
+                        if (loBranch.Fullname == "refs/heads/master")
+                        {
+                            <b style="border: 1px solid gray; background-color: red; color: white">@loBranch.Name</b>
+                        }
+                        else
+                        {
+                            <b style="border: 1px solid gray; background-color: green; color: white">@loBranch.Name</b>
+                        }
+                    }
+                </div>
+                <div>
+                    <i>@Resources.Tag</i>
+                    @foreach (var loTag in Model.Tags)
+                    {
+                        <b style="border: 1px solid white; background-color: yellow">@loTag.Name</b>
+                    }
+                </div>
                 <div>
                     <i>@Resources.Commit</i>
                     <a class="hash" href="@Url.Content("~/" + Model.Project + "/commit/" + Model.Commit.Hash + Model.PathSegments.JoinLeft("/"))"
                         title="@Model.Commit.Hash">@Model.Commit.ShortHash</a>
                 </div>
-                @if (Model.Commit.Ancestors.Any()) {
+                @if (Model.Commit.Ancestors.Any())
+                {
                     var loFirstParent = Model.Commit.Ancestors.First();
                     <div>
                         <i>@Resources.Parent</i>
@@ -106,15 +124,17 @@
         
     <div class="hint">@Resources.RightClickToDownload</div>
     <ul id="repositories">
-		@foreach (var loDir in Model.Directories) {
-            var loCommit = Model.WebBrowsingSettings.ShowTreeNodeDetails ? loDir.GetLastCommitBefore(Model.Commit) : null;
+		@foreach (var loDir in Model.Directories)
+  {
+      var loCommit = Model.WebBrowsingSettings.ShowTreeNodeDetails ? loDir.GetLastCommitBefore(Model.Commit) : null;
 			<li>
 				<a class="repository" href="@Url.Content("~/" + Model.Project + "/tree/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loDir.Name)"
                     title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loDir.Name)">
 					@loDir.Name
 					<span class="latest-commit">
                         @loDir.Trees.Count() @Resources.Directories, @loDir.Leaves.Count() @Resources.Files
-                        @if (loCommit != null) {
+                        @if (loCommit != null)
+                        {
                             @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.CommitDate.ToPrettyDateString()
                             @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.Message.Shorten(60)
                             @:&nbsp;&nbsp;&nbsp;&nbsp;[@loCommit.Committer.Name]
@@ -122,16 +142,18 @@
                     </span>
 				</a>
 			</li>
-        }
-		@foreach (var loFile in Model.Files) {
-            var loCommit = Model.WebBrowsingSettings.ShowTreeNodeDetails ? loFile.GetLastCommitBefore(Model.Commit) : null;
+  }
+		@foreach (var loFile in Model.Files)
+  {
+      var loCommit = Model.WebBrowsingSettings.ShowTreeNodeDetails ? loFile.GetLastCommitBefore(Model.Commit) : null;
 			<li>
 				<a class="repository" href="@Url.Content("~/" + Model.Project + "/blob/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loFile.Name)"
                     title="@Url.Content("~/" + Model.Project + "/download/" + Model.TreeName + "/" + Model.PathSegments.JoinRight("/") + loFile.Name)">
 					@loFile.Name
 					<span class="latest-commit">
                         @loFile.Size @Resources.Bytes
-                        @if (loCommit != null) {
+                        @if (loCommit != null)
+                        {
                             @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.CommitDate.ToPrettyDateString()
                             @:&nbsp;&nbsp;&nbsp;&nbsp;@loCommit.Message.Shorten(60)
                             @:&nbsp;&nbsp;&nbsp;&nbsp;[@loCommit.Committer.Name]
