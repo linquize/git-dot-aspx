@@ -20,6 +20,8 @@
 
 namespace GitAspx.Controllers
 {
+    using System;
+    using System.IO;
     using System.Linq;
     using System.Threading;
     using System.Web.Mvc;
@@ -41,6 +43,7 @@ namespace GitAspx.Controllers
 
             return View(new DirectoryListViewModel
             {
+                RepositoryLevel = repositories.RepositoryLevel,
                 RepositoriesDirectory = repositories.GetRepositoriesDirectory().FullName,
                 RepositoryCategory = repositories.CombineRepositoryCat(cat, subcat),
                 Repositories = repositories.GetAllRepositories(cat, subcat).Select(x => new RepositoryViewModel(x))
@@ -48,12 +51,60 @@ namespace GitAspx.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(string cat, string subcat, string project)
+        public ActionResult CreateRepository(string cat, string subcat, string project)
         {
             if (!string.IsNullOrEmpty(project))
                 repositories.CreateRepository(cat, subcat, project);
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Cat(string cat)
+        {
+            Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = this.GetWebBrowsingSettings().CultureObject;
+
+            string lsRoot = repositories.GetRepositoriesDirectory().FullName;
+            string lsDir = string.IsNullOrEmpty(cat) ? lsRoot : Path.Combine(lsRoot, cat);
+            string[] lsaGitDirs = Array.FindAll(Array.ConvertAll(Directory.GetDirectories(lsDir), a => Path.GetFileName(a)), b => !b.EndsWith(".git"));
+
+            var lqGetRepo = string.IsNullOrEmpty(cat)
+                ? lsaGitDirs.Select(a => new { Category = a, Repositories = repositories.GetAllRepositories(a, null) })
+                : lsaGitDirs.Select(a => new { Category = a, Repositories = repositories.GetAllRepositories(cat, a) });
+
+            var lqCatgories = lqGetRepo.Select(a => new
+                    {
+                        a.Category,
+                        Repository = a.Repositories.Select(b => new { b.Name, Commit = b.GetLatestCommit() })
+                            .OrderByDescending(b => b.Commit != null ? b.Commit.Date : DateTime.MinValue).FirstOrDefault()
+                    }
+                ).Select(c => new CatViewModel.CatInfo
+                    {
+                        CatName = c.Category,
+                        LatestRepositoryName = c.Repository != null ? c.Repository.Name : null,
+                        LatestCommitInfo = c.Repository != null && c.Repository.Commit != null ? c.Repository.Commit.Message + " - " + c.Repository.Commit.Message : null
+                    }
+                );
+
+
+            return View(new CatViewModel { RepositoryCategory = cat, Categories = lqCatgories });
+        }
+
+        [HttpPost]
+        public ActionResult CreateCategory(string cat, string newcat)
+        {
+            string lsDir = repositories.GetRepositoriesDirectory().FullName;
+            if (!string.IsNullOrEmpty(cat))
+            {
+                if (!Directory.Exists(Path.Combine(lsDir, cat, newcat)))
+                    Directory.CreateDirectory(Path.Combine(lsDir, cat, newcat));
+            }
+            else
+            {
+                if (!Directory.Exists(Path.Combine(lsDir, newcat)))
+                    Directory.CreateDirectory(Path.Combine(lsDir, newcat));
+            }
+
+            return RedirectToAction("Cat");
         }
     }
 }

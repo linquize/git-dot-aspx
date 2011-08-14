@@ -30,9 +30,9 @@ namespace GitAspx.Lib
     {
         readonly AppSettings appSettings;
 
-        public bool SingleRepositoryOnly
+        public int RepositoryLevel
         {
-            get { return appSettings.RepositoryLevel == 0; }
+            get { return appSettings.RepositoryLevel; }
         }
 
         public RepositoryService(AppSettings appSettings)
@@ -89,12 +89,11 @@ namespace GitAspx.Lib
             string prefix2 = Path.Combine(prefix.SplitSlashes_OrEmpty().ToArray());
             prefix2 = prefix2.Length > 0 ? prefix2 + Path.DirectorySeparatorChar : prefix2;
             return appSettings.RepositoriesDirectory
-                .GetDirectories(prefix2 + "*")
-                .Where(x => x.Name.EndsWith(".git", StringComparison.InvariantCultureIgnoreCase))
+                .GetDirectories(prefix2 + "*.git")
                 .Select(a => GitRepository.Open(a, appSettings.RepositoriesDirectory.FullName))
                 .ToList();
         }
-
+        
         public GitRepository GetRepository(string cat, string subcat, string project)
         {
             var directory = CombinePhysicalDir(cat, subcat, project);

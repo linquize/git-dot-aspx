@@ -48,9 +48,9 @@
 <div class="jqmWindow" id="createRepositoryDialog">
 	<div class="title">@Resources.CreateRepository <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">
-	@using (Html.BeginForm("create", "DirectoryList")) {
+	@using (Html.BeginForm("CreateRepository", "DirectoryList")) {
 		<input type="text" name="project" />@:.git<br />
-		<input type="submit" value="Create a new repository" class="button" />
+		<input type="submit" value="@Resources.CreateRepository" class="button" />
 	}
 	</div>
 </div>

@@ -135,6 +135,9 @@
   <data name="CreateBareRepository" xml:space="preserve">
     <value>Create a new bare repository</value>
   </data>
+  <data name="CreateCategory" xml:space="preserve">
+    <value>Create a category</value>
+  </data>
   <data name="CreateRepository" xml:space="preserve">
     <value>Create a new repository</value>
   </data>

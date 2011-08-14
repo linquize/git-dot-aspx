@@ -131,6 +131,15 @@ namespace GitAspx.Lib
             }
         }
 
+        public string Category
+        {
+            get
+            {
+                string lsCat = Path.GetDirectoryName(directory.FullName).Substring(rootDirectory.Length).Replace('\\', '/');
+                return lsCat.StartsWith("/") ? lsCat.Substring(1) : lsCat;
+            }
+        }
+
         public string GitDirectory()
         {
             if (PhysicalPathDotGit.EndsWith(".git", StringComparison.OrdinalIgnoreCase))

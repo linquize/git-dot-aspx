@@ -135,6 +135,9 @@
   <data name="CreateBareRepository" xml:space="preserve">
     <value>建立一個新的淨倉庫</value>
   </data>
+  <data name="CreateCategory" xml:space="preserve">
+    <value>建立分類</value>
+  </data>
   <data name="CreateRepository" xml:space="preserve">
     <value>建立一個新的倉庫</value>
   </data>

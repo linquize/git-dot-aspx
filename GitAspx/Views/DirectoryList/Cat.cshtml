@@ -1,0 +1,76 @@
+﻿@model GitAspx.ViewModels.CatViewModel
+@using GitAspx.Properties;
+@{ViewBag.Title = "git Repositories";}
+
+<div class="switchBar" style="position: absolute">
+    <ul>
+        <li>
+            <a href="javascript:void()">@Resources.Cultures (5)</a>
+            <ul>
+                <li><a href="@Url.Content("~/settings/Culture/en-US")">English</a></li>
+                <li><a href="@Url.Content("~/settings/Culture/zh-TW")">繁體中文</a></li>
+                <li><a href="@Url.Content("~/settings/Culture/zh-CN")">简体中文</a></li>
+                <li><a href="@Url.Content("~/settings/Culture/ja-JP")">日本語</a></li>
+                <li><a href="@Url.Content("~/settings/Culture/de-DE")">Deutsch</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<div class="repositoryContainer">
+	<h1>@Model.RepositoryCategory</h1>
+
+	<a href="javascript:void(0)" class="createRepository">@Resources.CreateCategory</a>
+	<div class="clear"></div>
+
+	<ul id="repositories">
+		@foreach (var loCategory in Model.Categories) {
+			<li>
+				<a class="repository" href="@Url.Content("~/" + loCategory.CatName)" title="">
+					@loCategory.CatName
+					<span class="latest-commit">@loCategory.LatestRepositoryName : @loCategory.LatestCommitInfo</span>
+				</a>
+			</li>
+		}
+	</ul>
+
+</div>
+
+<div class="jqmWindow" id="dialog">
+	<div class="title">@Resources.CloneRepositoryCommand <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
+	<div class="content">			
+		<pre>git clone <input type="text" id="repository-url" /></pre>
+	</div>
+</div>
+
+<div class="jqmWindow" id="createRepositoryDialog">
+	<div class="title">@Resources.CreateCategory <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
+	<div class="content">
+	@using (Html.BeginForm("CreateCategory", "DirectoryList")) {
+		<input type="text" name="newcat" /><br />
+		<input type="submit" value="@Resources.CreateCategory" class="button" />
+	}
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#dialog').jqm();
+        $('#createRepositoryDialog').jqm();
+
+        $('#repository-url').click(function () {
+            $(this).select();
+        });
+
+        $('a.repository').bind("contextmenu", function () {
+            var url = $(this).attr('title');
+            $('#dialog').jqmShow();
+            $('#repository-url').val(url).focus().select();
+            return false;
+        });
+
+        $('a.createRepository').click(function () {
+            $('#createRepositoryDialog').jqmShow();
+        });
+    });
+</script>
