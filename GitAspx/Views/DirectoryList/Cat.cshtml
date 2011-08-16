@@ -26,7 +26,7 @@
 	<ul id="repositories">
 		@foreach (var loCategory in Model.Categories) {
 			<li>
-				<a class="repository" href="@Url.Content("~/" + loCategory.CatName)" title="">
+				<a class="repository" href="@Url.Content("~/" + Model.RepositoryCategory + (string.IsNullOrEmpty(Model.RepositoryCategory) ? "" : "/") + loCategory.CatName)" title="">
 					@loCategory.CatName
 					<span class="latest-commit">@loCategory.LatestRepositoryName : @loCategory.LatestCommitInfo</span>
 				</a>

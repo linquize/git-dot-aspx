@@ -81,17 +81,30 @@ namespace GitAspx.Lib
 
         public IEnumerable<GitRepository> GetAllRepositories(string cat, string subcat)
         {
+            if (string.IsNullOrEmpty(subcat) && appSettings.RepositoryLevel == 3)
+                return GetAllRepositoriesDeeper(cat);
             return GetAllRepositories(CombineRepositoryCat(cat, subcat));
         }
 
         IEnumerable<GitRepository> GetAllRepositories(string prefix)
         {
             string prefix2 = Path.Combine(prefix.SplitSlashes_OrEmpty().ToArray());
-            prefix2 = prefix2.Length > 0 ? prefix2 + Path.DirectorySeparatorChar : prefix2;
+            string lsPattern = (prefix2.Length > 0 ? prefix2 + Path.DirectorySeparatorChar : "") + "*.git";
             return appSettings.RepositoriesDirectory
-                .GetDirectories(prefix2 + "*.git")
+                .GetDirectories(lsPattern)
                 .Select(a => GitRepository.Open(a, appSettings.RepositoriesDirectory.FullName))
                 .ToList();
+        }
+
+        IEnumerable<GitRepository> GetAllRepositoriesDeeper(string prefix)
+        {
+            string prefix2 = Path.Combine(prefix.SplitSlashes_OrEmpty().ToArray());
+            string lsPattern = prefix2.Length > 0 ? prefix2 + Path.DirectorySeparatorChar : "";
+            return appSettings.RepositoriesDirectory
+                .GetDirectories(lsPattern)
+                .SelectMany(a => a.GetDirectories("*.git")
+                    .Select(b => GitRepository.Open(b, appSettings.RepositoriesDirectory.FullName))
+                ).ToList();
         }
         
         public GitRepository GetRepository(string cat, string subcat, string project)
