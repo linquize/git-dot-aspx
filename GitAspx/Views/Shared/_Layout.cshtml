@@ -24,8 +24,14 @@
 			<a href="http://github.com/linquize/git-dot-aspx">Powered by GitAspx @Helpers.Version</a>,
             <a href="http://github.com/linquize/GitSharp">GitSharp @Helpers.GitDllVersion</a>,
             <a href="http://github.com/linquize/GitSharp">GitSharp.Core @Helpers.GitCoreDllVersion</a>
-            @if (Model is WebBrowsingBaseViewModel) {
-                @((DateTime.Now - ((WebBrowsingBaseViewModel)Model).CtorTime).TotalMilliseconds.ToString("F1") + " ms")
+            @{var loModel = Model as WebBrowsingBaseViewModel;}
+            @if (loModel != null)
+            {
+                if (loModel.Repository != null)
+                {
+                    loModel.Repository.Close();
+                }
+                @((DateTime.Now - loModel.CtorTime).TotalMilliseconds.ToString("F1") + " ms")
             }
 		</div>
         <div style="display: none">
