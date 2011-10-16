@@ -34,17 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GitSharp">
-      <HintPath>..\lib\GitSharp\GitSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="GitSharp.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\GitSharp\GitSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="StructureMap">
       <HintPath>..\lib\structuremap\StructureMap.dll</HintPath>
     </Reference>
@@ -64,9 +57,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions">
@@ -224,6 +214,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DirectoryList\Cat.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lib\GitSharp\GitSharp.Core\GitSharp.Core-VS2010.csproj">
+      <Project>{C46EDD61-C202-465A-93F1-ADE20A83BB59}</Project>
+      <Name>GitSharp.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\lib\GitSharp\GitSharp\GitSharp-VS2010.csproj">
+      <Project>{7311850F-619A-4241-B09F-157792C75FBA}</Project>
+      <Name>GitSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
