@@ -1,0 +1,3 @@
+[submodule "lib/GitSharp"]
+	path = lib/GitSharp
+	url = https://github.com/linquize/GitSharp.git
