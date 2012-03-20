@@ -28,7 +28,7 @@
 	<ul id="repositories">
 		@foreach (var repository in Model.Repositories) {
 			<li>
-				<a class="repository" href="@Url.Content("~/" + repository.FullName)" title="@Url.GetGitUrl(repository.Name)">
+				<a class="repository" href="@Url.Content("~/" + repository.FullName)" title="@Url.GetGitUrl(repository.FullName)">
 					@repository.Name
 					<span class="latest-commit">@repository.LatestCommitInfo</span>
 				</a>
