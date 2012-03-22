@@ -1,0 +1,83 @@
+﻿@model GitAspx.ViewModels.TreeViewModel
+@using GitAspx;
+@using GitAspx.Properties;
+@{ViewBag.Title = Model.Title;}
+
+<div class="repositoryContainer">
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="switchBar">
+                    <ul>
+                        <li>
+                            <a href="javascript:void()">@Resources.Branches (@Model.Repository.Branches.Count)</a>
+                            @if (Model.Repository.Branches.Any()) {
+                                <ul>
+                                @foreach (var lkvpBranch in Model.Repository.Branches) {
+                                    <li><a href="@Url.Content("~/" + Model.Project + "/tree/" + lkvpBranch.Key + Model.PathSegments.JoinLeft("/"))" title="@lkvpBranch.Key">@lkvpBranch.Key</a></li>
+                                }
+                                </ul>
+                            }
+                        </li>
+                        <li>
+                            <a href="javascript:void()">@Resources.Tags (@Model.Repository.Tags.Count)</a>
+                            @if (Model.Repository.Tags.Any()) {
+                                <ul>
+                                @foreach (var lkvpTag in Model.Repository.Tags) {
+                                    <li><a href="@Url.Content("~/" + Model.Project + "/tree/" + lkvpTag.Key + Model.PathSegments.JoinLeft("/"))" title="@lkvpTag.Key">@lkvpTag.Key</a></li>
+                                }
+                                </ul>
+                            }
+                        </li>
+                        <li>
+                            <a href="javascript:void()">@Resources.Parents (0)</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void()">@Resources.Cultures (5)</a>
+                            <ul>
+                                <li><a href="@Url.Content("~/settings/Culture/en-US")">English</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/zh-TW")">繁體中文</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/zh-CN")">简体中文</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/ja-JP")">日本語</a></li>
+                                <li><a href="@Url.Content("~/settings/Culture/de-DE")">Deutsch</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:void()">@Resources.Settngs</a>
+                            <ul>
+                                <li>
+                                    <a href="@Url.Content("~/settings/ShowTreeNodeDetails/" + !Model.WebBrowsingSettings.ShowTreeNodeDetails)">
+                                        @(Model.WebBrowsingSettings.ShowTreeNodeDetails ? Resources.HideTreeNodeDetails : Resources.ShowTreeNodeDetails)
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <h1>@Model.Project@Model.PathSegments.JoinLeft(" / ")</h1>
+    
+    <div style="font-size: 130%; border: 1px dashed white; padding: 5px">
+        <div style="text-decoration: underline; font-weight: bold; font-style: italic; font-size: 150%">Set up your repository</div>
+        <b>Create new local repository</b>
+        <ol>
+            <li>mkdir @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
+            <li>cd @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
+            <li>git init</li>
+            <li>Create your own files</li>
+            <li>git add .</li>
+            <li>git commit</li>
+            <li>git remote add origin @Url.GetGitUrl(Model.Project)</li>
+            <li>git push origin master</li>
+        </ol>
+        <b>Import existing local repository</b>
+        <ol>
+            <li>cd @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
+            <li>git remote add origin @Url.GetGitUrl(Model.Project)</li>
+            <li>git push origin master</li>
+        </ol>
+        <div>When finished, refresh the page.</div>
+    </div>
+</div>

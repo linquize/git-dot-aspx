@@ -49,9 +49,12 @@ namespace GitAspx.Controllers
                 model.WebBrowsingSettings = this.GetWebBrowsingSettings();
                 Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = model.WebBrowsingSettings.CultureObject;
 
+                model.Title = project;
                 model.PathSegments = path.SplitSlashes_OrEmpty().ToArray();
                 model.Project = repositories.CombineRepositoryName(cat, subcat, project);
                 model.Repository = repositories.GetBackendRepository(cat, subcat, project);
+                if (model.Repository.Branches.Count == 0)
+                    return View("EmptyRepository", model);
 
                 if (string.IsNullOrWhiteSpace(tree))
                     tree = model.Repository.CurrentBranch.Name;
