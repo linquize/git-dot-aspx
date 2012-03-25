@@ -127,6 +127,7 @@ namespace GitAspx.Lib
             get
             {
                 string lsPath = directory.FullName.Substring(rootDirectory.Length);
+                lsPath = lsPath.Replace(Path.DirectorySeparatorChar, '/');
                 return lsPath.StartsWith("/") ? lsPath.Substring(1) : lsPath;
             }
         }
