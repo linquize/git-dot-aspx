@@ -124,6 +124,9 @@
     <Content Include="Content\images\add.png" />
     <Content Include="Content\images\bullet.png" />
     <Content Include="Content\images\close.png" />
+    <Content Include="Content\images\EGit-Logo.png" />
+    <Content Include="Content\images\TortoiseGit-Logo.png" />
+    <Content Include="Content\images\TortoiseHg-Logo.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="PrettyDate.xml" />

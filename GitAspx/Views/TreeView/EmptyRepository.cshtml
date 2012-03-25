@@ -62,22 +62,46 @@
     <div style="font-size: 130%; border: 1px dashed white; padding: 5px">
         <div style="text-decoration: underline; font-weight: bold; font-style: italic; font-size: 150%">Set up your repository</div>
         <b>Create new local repository</b>
-        <ol>
-            <li>mkdir @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
-            <li>cd @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
-            <li>git init</li>
-            <li>Create your own files</li>
-            <li>git add .</li>
-            <li>git commit</li>
-            <li>git remote add origin @Url.GetGitUrl(Model.Project)</li>
-            <li>git push origin master</li>
-        </ol>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 60%">
+                    Git command line
+                    <ol>
+                        <li>mkdir @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
+                        <li>cd @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
+                        <li>git init</li>
+                        <li>Create your own files</li>
+                        <li>git add .</li>
+                        <li>git commit</li>
+                        <li>git remote add origin @Url.GetGitUrl(Model.Project)</li>
+                        <li>git push origin master</li>
+                    </ol>
+                </td>
+                <td style="width: 40%">
+                    <img alt="TortoiseGit" src="@Url.Content("~/Content/images/TortoiseGit-Logo.png")" />
+                    <img alt="EGit" src="@Url.Content("~/Content/images/EGit-Logo.png")" />
+                    <img alt="TortoiseHg" src="@Url.Content("~/Content/images/TortoiseHg-Logo.png")" />
+                </td>
+            </tr>
+        </table>
         <b>Import existing local repository</b>
-        <ol>
-            <li>cd @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
-            <li>git remote add origin @Url.GetGitUrl(Model.Project)</li>
-            <li>git push origin master</li>
-        </ol>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 60%">
+                    Git command line
+                    <ol>
+                        <li>cd @Model.Project.Substring(Model.Project.LastIndexOf('/') + 1)</li>
+                        <li>git remote add origin @Url.GetGitUrl(Model.Project)</li>
+                        <li>git push origin master</li>
+                    </ol>
+                </td>
+                <td style="width: 40%">
+                    <img alt="TortoiseGit" src="@Url.Content("~/Content/images/TortoiseGit-Logo.png")" />
+                    <img alt="EGit" src="@Url.Content("~/Content/images/EGit-Logo.png")" />
+                    <img alt="TortoiseHg" src="@Url.Content("~/Content/images/TortoiseHg-Logo.png")" />
+                </td>
+            </tr>
+        </table>
         <div>When finished, refresh the page.</div>
     </div>
 </div>
