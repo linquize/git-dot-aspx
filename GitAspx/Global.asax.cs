@@ -35,6 +35,8 @@ namespace GitAspx
             RouteTable.Routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             RouteTable.Routes.IgnoreRoute("favicon.ico");
 
+            MapSimpleRoute("settings", "settings/{key}/{value}", "WebBrowsingSettings", "Index");
+
             string lsPath = GetPathPattern();
             string lsPathSlash = lsPath.Length > 0 ? lsPath + "/" : lsPath;
             string lsCat = GetCatPattern();
@@ -78,8 +80,6 @@ namespace GitAspx
             MapSimpleRoute("tree", lsPathSlash + "tree/{tree}/{*path}", "TreeView", "Index");
             MapSimpleRoute("blob", lsPathSlash + "blob/{tree}/{*path}", "BlobView", "Index");
             MapSimpleRoute("download", lsPathSlash + "download/{tree}/{*path}", "DownloadView", "Index");
-
-            MapSimpleRoute("settings", "settings/{key}/{value}", "WebBrowsingSettings", "Index");
         }
 
         static void MapSimpleRoute(string asName, string asUrl)
