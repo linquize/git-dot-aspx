@@ -96,13 +96,16 @@
                         }
                     }
                 </div>
-                <div>
-                    <i>@Resources.Tag</i>
-                    @foreach (var loTag in Model.Tags)
-                    {
-                        <b style="border: 1px solid white; background-color: yellow">@loTag.Name</b>
-                    }
-                </div>
+                @if (Model.Tags.Any())
+                {
+                    <div>
+                        <i>@Resources.Tag</i>
+                        @foreach (var loTag in Model.Tags)
+                        {
+                            <b style="border: 1px solid white; background-color: yellow">@loTag.Name</b>
+                        }
+                    </div>
+                }
                 <div>
                     <i>@Resources.Commit</i>
                     <a class="hash" href="@Url.Content("~/" + Model.Project + "/commit/" + Model.Commit.Hash + Model.PathSegments.JoinLeft("/"))"
