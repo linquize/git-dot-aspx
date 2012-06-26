@@ -77,8 +77,10 @@ namespace GitAspx
 
             MapSimpleRoute("repo-home", lsPath, "TreeView", "Index");
             MapSimpleRoute("tree-home", lsPathSlash + "tree", "TreeView", "Index");
+            MapSimpleRoute("tree-commit", lsPathSlash + "tree/{tree}", "TreeView", "Index");
             MapSimpleRoute("tree", lsPathSlash + "tree/{tree}/{*path}", "TreeView", "Index");
             MapSimpleRoute("blob", lsPathSlash + "blob/{tree}/{*path}", "BlobView", "Index");
+            MapSimpleRoute("download-commit", lsPathSlash + "download/{tree}", "DownloadView", "Index");
             MapSimpleRoute("download", lsPathSlash + "download/{tree}/{*path}", "DownloadView", "Index");
         }
 
