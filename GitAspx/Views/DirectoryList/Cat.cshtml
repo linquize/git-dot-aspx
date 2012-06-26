@@ -36,13 +36,6 @@
 
 </div>
 
-<div class="jqmWindow" id="dialog">
-	<div class="title">@Resources.CloneRepositoryCommand <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
-	<div class="content">			
-		<pre>git clone <input type="text" id="repository-url" /></pre>
-	</div>
-</div>
-
 <div class="jqmWindow" id="createRepositoryDialog">
 	<div class="title">@Resources.CreateCategory <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">
@@ -55,18 +48,10 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#dialog').jqm();
         $('#createRepositoryDialog').jqm();
 
         $('#repository-url').click(function () {
             $(this).select();
-        });
-
-        $('a.repository').bind("contextmenu", function () {
-            var url = $(this).attr('title');
-            $('#dialog').jqmShow();
-            $('#repository-url').val(url).focus().select();
-            return false;
         });
 
         $('a.createRepository').click(function () {
