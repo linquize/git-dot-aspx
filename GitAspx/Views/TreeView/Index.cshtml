@@ -86,7 +86,7 @@
                     <i>@Resources.Branch</i>
                     @foreach (var loBranch in Model.Branches)
                     {
-                        if (loBranch.Fullname == "refs/heads/master")
+                        if (loBranch.CurrentCommit.Hash == Model.Commit.Hash)
                         {
                             <b style="border: 1px solid gray; background-color: red; color: white">@loBranch.Name</b>
                         }
