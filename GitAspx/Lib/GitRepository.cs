@@ -83,7 +83,7 @@ namespace GitAspx.Lib
                 return new CommitInfo
                 {
                     Message = commit.Message,
-                    Date = commit.CommitDate.DateTime
+                    Date = commit.CommitDate.LocalDateTime
                 };
             }
         }
