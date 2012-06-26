@@ -111,16 +111,17 @@
                     <a class="hash" href="@Url.Content("~/" + Model.Project + "/commit/" + Model.Commit.Hash + Model.PathSegments.JoinLeft("/"))"
                         title="@Model.Commit.Hash">@Model.Commit.ShortHash</a>
                 </div>
-                @if (Model.Commit.Ancestors.Any())
+                @if (Model.Commit.Parents.Any())
                 {
-                    var loFirstParent = Model.Commit.Ancestors.First();
-                    <div>
-                        <i>@Resources.Parent</i>
-                        <a class="hash" href="@Url.Content("~/" + Model.Project + "/tree/" + loFirstParent.Hash + Model.PathSegments.JoinLeft("/"))"
-                                title="@loFirstParent.Hash">
-                                @loFirstParent.ShortHash @loFirstParent.CommitDate.ToPrettyDateString()
-                        </a>
-                    </div>
+                    foreach (var loParent in Model.Commit.Parents)
+                    {
+                        <div>
+                            <i>@Resources.Parent</i>
+                            <a class="hash" href="@Url.Content("~/" + Model.Project + "/tree/" + loParent.Hash + Model.PathSegments.JoinLeft("/"))"
+                                title="@loParent.Hash">@loParent.ShortHash</a>
+                            @loParent.CommitDate.ToPrettyDateString()
+                        </div>
+                    }
                 }
                 <div>
                     Repository Size: ~@Model.RepositorySize
