@@ -78,9 +78,11 @@
                     </ol>
                 </td>
                 <td style="width: 40%">
-                    <img alt="TortoiseGit" src="@Url.Content("~/Content/images/TortoiseGit-Logo.png")" />
-                    <img alt="EGit" src="@Url.Content("~/Content/images/EGit-Logo.png")" />
-                    <img alt="TortoiseHg" src="@Url.Content("~/Content/images/TortoiseHg-Logo.png")" />
+                    GUI clients<br />
+                    <a href="javascript:void(0)" id="imgTortoiseGit1">
+                        <img alt="TortoiseGit" src="@Url.Content("~/Content/images/TortoiseGit-Logo.png")" /></a>
+                    <img id="imgEGit1" alt="EGit" src="@Url.Content("~/Content/images/EGit-Logo.png")" />
+                    <img id="imgTortoiseHg1" alt="TortoiseHg" src="@Url.Content("~/Content/images/TortoiseHg-Logo.png")" />
                 </td>
             </tr>
         </table>
@@ -96,12 +98,17 @@
                     </ol>
                 </td>
                 <td style="width: 40%">
-                    <img alt="TortoiseGit" src="@Url.Content("~/Content/images/TortoiseGit-Logo.png")" />
-                    <img alt="EGit" src="@Url.Content("~/Content/images/EGit-Logo.png")" />
-                    <img alt="TortoiseHg" src="@Url.Content("~/Content/images/TortoiseHg-Logo.png")" />
+                    GUI clients<br />
+                    <img id="imgTortoiseGit2" alt="TortoiseGit" src="@Url.Content("~/Content/images/TortoiseGit-Logo.png")" />
+                    <img id="imgEGit2" alt="EGit" src="@Url.Content("~/Content/images/EGit-Logo.png")" />
+                    <img id="imgTortoiseHg2" alt="TortoiseHg" src="@Url.Content("~/Content/images/TortoiseHg-Logo.png")" />
                 </td>
             </tr>
         </table>
         <div>When finished, refresh the page.</div>
     </div>
 </div>
+
+<pre id="preTortoiseGit">
+@Html.Partial("Tutorial_TortoiseGit")
+</pre>

@@ -1,0 +1,229 @@
+﻿
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.tools.min.js")"></script>
+<style type="text/css">
+/* container for slides */
+.images {
+    border:1px solid #ccc;
+    position:relative;
+    height:500px;
+    width:900px;
+    float:left;
+    margin:15px;
+    cursor:pointer;
+
+    /* CSS3 tweaks for modern browsers */
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    -moz-box-shadow:0 0 25px #666;
+    -webkit-box-shadow:0 0 25px #666;
+}
+
+/* single slide */
+.images div {
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+    margin:7px;
+    padding:15px 30px 15px 15px;
+    height:256px;
+    font-size:12px;
+}
+
+/* header */
+.images h3 {
+    font-size:22px;
+    font-weight:normal;
+    margin:0 0 20px 0;
+    color:#456;
+}
+
+/* tabs (those little circles below slides) */
+.slidetabs {
+    clear:both;
+    margin-left:450px;
+}
+
+/* single tab */
+.slidetabs a {
+    width:8px;
+    height:8px;
+    float:left;
+    margin:3px;
+    background:url(@Url.Content("~/Content/images/navigator.png")) 0 0 no-repeat;
+    display:block;
+    font-size:1px;
+}
+
+/* mouseover state */
+.slidetabs a:hover {
+    background-position:0 -8px;
+}
+
+/* active state (current page state) */
+.slidetabs a.current {
+    background-position:0 -16px;
+}
+
+
+/* prev and next buttons */
+.forward, .backward {
+    float:left;
+    margin-top:140px;
+    background:url(@Url.Content("~/Content/images/hori_large.png")) no-repeat;
+    display:block;
+    width:30px;
+    height:30px;
+    cursor:pointer;
+    font-size:1px;
+    text-indent:-9999em;
+}
+
+/* next */
+.forward { background-position: 0 -30px; clear:right; }
+.forward:hover { background-position:-30px -30px; }
+.forward:active	{ background-position:-60px -30px; }
+
+
+/* prev */
+.backward:hover	{ background-position:-30px 0; }
+.backward:active { background-position:-60px 0; }
+
+/* disabled navigational button. is not needed when tabs are
+   configured with rotate: true */
+.disabled {
+    visibility:hidden !important;
+}
+</style>
+
+<div class="jqmWindow" id="dlgTortoiseGit1" style="width: 1030px; height: 580px; margin-left: auto; left: auto; top: 10px">
+	<div class="title">Using TortoiseGit</div>
+	<div class="content">
+		<!-- "previous slide" button -->
+		<a class="backward">prev</a>
+		 
+		<!-- container for the slides -->
+		<div class="images"> 
+			<!-- first slide -->
+			<div>
+				<table>
+					<tr>
+						<td>
+							In Windows Explorer, right-click the desired folder in the parent folder, <br/>
+							or right-click empty space inside the desired folder, Choose "Git create repository here".
+						</td>
+						<td>
+							<img src="@Url.Content("~/Content/images/TortoiseGit-MenuCreate.png")" alt="git init menuitem" />
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- second slide -->
+			<div>
+				<table style="width: 100%">
+					<tr>
+						<td style="width: 40%">
+							Do <u>NOT</u> check bare. Click OK.<br/>
+							If you try to create repository in a non-empty directory, it will warn you. Click "Proceed" to create anyway.<br/>
+						</td>
+						<td style="width: 60%">
+							<img src="@Url.Content("~/Content/images/TortoiseGit-Init.png")" alt="git init dialog" />
+							<img src="@Url.Content("~/Content/images/TortoiseGit-InitWarning.png")" alt="git init warning" />
+							<img src="@Url.Content("~/Content/images/TortoiseGit-Initialized.png")" alt="git initialized" />
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- third slide -->
+			<div>
+				<table>
+					<tr>
+						<td>
+							Add your files. In Windows Explorer, right-click "Git commit".<br/>
+							Enter commit message, and choose the files to be tracked. You may click "Select All" checkbox to track all files.<br/>
+							Click "OK" to confirm.
+						</td>
+						<td>
+							<img src="@Url.Content("~/Content/images/TortoiseGit-Commit.png")" alt="git commit dialog" />
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<!-- forth slide -->
+			<div>
+				<table>
+					<tr>
+						<td>
+							Commit is made. Click "Push" to send the changes to remote repository.
+						</td>
+						<td>
+							<img src="@Url.Content("~/Content/images/TortoiseGit-Committed.png")" alt="git committed" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		  
+			<!-- fifth slide -->
+			<div>
+				<table>
+					<tr>
+						<td>
+							Click "Manage" remote first (See next slide). After setting the remote url, Click "OK" to push.
+						</td>
+						<td>
+							<img src="@Url.Content("~/Content/images/TortoiseGit-Push.png")" alt="git push" />
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<!-- sixth slide -->
+			<div>
+				<table>
+					<tr>
+						<td>
+							Enter "origin" in "Remote", copy the url and paste into "URL". Click "OK" to save and go back to previous slide.
+						</td>
+						<td>
+							<img src="@Url.Content("~/Content/images/TortoiseGit-Remote.png")" alt="git remote" />
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		 
+		<!-- "next slide" button -->
+		<a class="forward">next</a>
+
+		<!-- the tabs -->
+		<div class="slidetabs">
+			<a href="#"></a>
+			<a href="#"></a>
+			<a href="#"></a>
+			<a href="#"></a>
+			<a href="#"></a>
+			<a href="#"></a>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $('#dlgTortoiseGit1').jqm();
+    $('#imgTortoiseGit1').click(function () {
+        $('#dlgTortoiseGit1').jqmShow();
+    });
+
+    $(".slidetabs").tabs(".images > div", {
+        // enable "cross-fading" effect
+        effect: 'fade',
+        fadeOutSpeed: "slow",
+
+        // start from the beginning after the last tab
+        rotate: true
+
+        // use the slideshow plugin. It accepts its own configuration
+    }).slideshow();
+</script>
