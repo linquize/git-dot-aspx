@@ -199,5 +199,19 @@ namespace GitAspx {
             return loSettings;
         }
         #endregion
+
+        #region IEnumerable
+        public static int CountWithLimit<T>(this IEnumerable<T> atqSource, int aiMaxCount)
+        {
+            int liCount = 0;
+            foreach (var atItem in atqSource)
+            {
+                liCount++;
+                if (liCount > aiMaxCount)
+                    return liCount;
+            }
+            return liCount;
+        }
+        #endregion
 	}
 }

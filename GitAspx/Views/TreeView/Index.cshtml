@@ -30,10 +30,12 @@
                             }
                         </li>
                         <li>
-                            <a href="javascript:void()">@Resources.Parents (@Model.Commit.Ancestors.Count())</a>
+                            @{var liLimit = 1000;}
+                            @{var liAncestors = Model.Commit.Ancestors.CountWithLimit(liLimit);}
+                            <a href="javascript:void()">@Resources.Parents (@(liAncestors > liLimit ? liLimit + "+" : liAncestors.ToString()))</a>
                             @if (Model.Commit.Ancestors.Any()) {
                                 <ul>
-                                @foreach (var loCommit in Model.Commit.Ancestors) {
+                                @foreach (var loCommit in Model.Commit.Ancestors.Take(liLimit)) {
                                     <li>
                                         <a href="@Url.Content("~/" + Model.Project + "/tree/" + loCommit.Hash + Model.PathSegments.JoinLeft("/"))"
                                             title="@loCommit.Hash"><span style="font-size: 10px; color: green">@loCommit.CommitDate.ToPrettyDateString(): </span>@loCommit.Message.Shorten(50)
