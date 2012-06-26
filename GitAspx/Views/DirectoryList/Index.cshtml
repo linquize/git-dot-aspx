@@ -48,10 +48,10 @@
 <div class="jqmWindow" id="createRepositoryDialog">
 	<div class="title">@Resources.CreateRepository <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">
-	@using (Html.BeginForm("CreateRepository", "DirectoryList")) {
-		<input type="text" name="project" />@:.git<br />
+	<form method="post" action="@Url.Content("~/" + Model.RepositoryCategory + (string.IsNullOrEmpty(Model.RepositoryCategory) ? "" : "/") + "create")">
+		<input type="text" name="project" /> .git<br />
 		<input type="submit" value="@Resources.CreateRepository" class="button" />
-	}
+	</form>
 	</div>
 </div>
 

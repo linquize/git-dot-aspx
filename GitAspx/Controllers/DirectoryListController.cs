@@ -56,7 +56,7 @@ namespace GitAspx.Controllers
             if (!string.IsNullOrEmpty(project))
                 repositories.CreateRepository(cat, subcat, project);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { cat, subcat });
         }
 
         public ActionResult Cat(string cat)

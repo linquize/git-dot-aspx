@@ -39,11 +39,11 @@
 <div class="jqmWindow" id="createRepositoryDialog">
 	<div class="title">@Resources.CreateCategory <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">
-	@using (Html.BeginForm("CreateCategory", "DirectoryList")) {
+	<form method="post" action="@Url.Content("~/" + Model.RepositoryCategory + (string.IsNullOrEmpty(Model.RepositoryCategory) ? "" : "/") + "create")">
 		<input type="hidden" name="cat" value="@Model.RepositoryCategory" />
 		<input type="text" name="newcat" /><br />
 		<input type="submit" value="@Resources.CreateCategory" class="button" />
-	}
+	</form>
 	</div>
 </div>
 

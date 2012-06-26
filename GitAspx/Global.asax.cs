@@ -75,7 +75,7 @@ namespace GitAspx
 
             MapSimpleRoute("giturl", lsPath + ".git");
 
-            MapSimpleRoute("repo-home", lsPathSlash, "TreeView", "Index");
+            MapSimpleRoute("repo-home", lsPath, "TreeView", "Index");
             MapSimpleRoute("tree-home", lsPathSlash + "tree", "TreeView", "Index");
             MapSimpleRoute("tree", lsPathSlash + "tree/{tree}/{*path}", "TreeView", "Index");
             MapSimpleRoute("blob", lsPathSlash + "blob/{tree}/{*path}", "BlobView", "Index");
