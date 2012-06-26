@@ -40,6 +40,7 @@
 	<div class="title">@Resources.CreateCategory <a href="#" class="jqmClose"><img src="@Url.Content("~/Content/images/close.png")" alt="Close" /></a></div>		
 	<div class="content">
 	@using (Html.BeginForm("CreateCategory", "DirectoryList")) {
+		<input type="hidden" name="cat" value="@Model.RepositoryCategory" />
 		<input type="text" name="newcat" /><br />
 		<input type="submit" value="@Resources.CreateCategory" class="button" />
 	}

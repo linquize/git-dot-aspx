@@ -104,7 +104,7 @@ namespace GitAspx.Controllers
                     Directory.CreateDirectory(Path.Combine(lsDir, newcat));
             }
 
-            return RedirectToAction("Cat");
+            return RedirectToAction("Cat", new { cat = cat });
         }
     }
 }

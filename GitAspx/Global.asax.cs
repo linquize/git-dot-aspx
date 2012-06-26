@@ -44,15 +44,15 @@ namespace GitAspx
             if (lsPath.Length > 0)
             {
                 string[] lsaCat = lsCat.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-                if (lsaCat.Length == 2)
-                {
-                    MapSimpleRoute("CatList2", lsaCat[0], "DirectoryList", "Cat");
-                    MapSimpleRoute("CatListCreate2", lsaCat[0] + "/create", "DirectoryList", "CreateCategory");
-                }
                 if (lsaCat.Length >= 1)
                 {
                     MapSimpleRoute("CatList1", "", "DirectoryList", "Cat");
                     MapSimpleRoute("CatListCreate1", "create", "DirectoryList", "CreateCategory");
+                }
+                if (lsaCat.Length == 2)
+                {
+                    MapSimpleRoute("CatList2", lsaCat[0], "DirectoryList", "Cat");
+                    MapSimpleRoute("CatListCreate2", lsaCat[0] + "/create", "DirectoryList", "CreateCategory");
                 }
 
                 MapSimpleRoute("DirectoryList", lsCat, "DirectoryList", "Index");
