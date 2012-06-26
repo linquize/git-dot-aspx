@@ -81,7 +81,7 @@ namespace GitAspx.Controllers
                     {
                         CatName = c.Category,
                         LatestRepositoryName = c.Repository != null ? c.Repository.Name : null,
-                        LatestCommitInfo = c.Repository != null && c.Repository.Commit != null ? c.Repository.Commit.Message + " - " + c.Repository.Commit.Message : null
+                        LatestCommitInfo = c.Repository != null && c.Repository.Commit != null ? c.Repository.Commit.Message + " - " + c.Repository.Commit.Date.ToPrettyDateString() : null
                     }
                 );
 
