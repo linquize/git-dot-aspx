@@ -13,7 +13,7 @@
                             <a href="javascript:void()">@Resources.Branches (@Model.Repository.Branches.Count)</a>
                             @if (Model.Repository.Branches.Any()) {
                                 <ul>
-                                @foreach (var lkvpBranch in Model.Repository.Branches) {
+                                @foreach (var lkvpBranch in Model.Repository.Branches.OrderByStringNatural(a => a.Key)) {
                                     <li><a href="@Url.Content("~/" + Model.Project + "/tree/" + lkvpBranch.Key + Model.PathSegments.JoinLeft("/"))" title="@lkvpBranch.Key">@lkvpBranch.Key</a></li>
                                 }
                                 </ul>
@@ -23,7 +23,7 @@
                             <a href="javascript:void()">@Resources.Tags (@Model.Repository.Tags.Count)</a>
                             @if (Model.Repository.Tags.Any()) {
                                 <ul>
-                                @foreach (var lkvpTag in Model.Repository.Tags) {
+                                @foreach (var lkvpTag in Model.Repository.Tags.OrderByStringNatural(a => a.Key)) {
                                     <li><a href="@Url.Content("~/" + Model.Project + "/tree/" + lkvpTag.Key + Model.PathSegments.JoinLeft("/"))" title="@lkvpTag.Key">@lkvpTag.Key</a></li>
                                 }
                                 </ul>
