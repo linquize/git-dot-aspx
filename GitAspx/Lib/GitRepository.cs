@@ -1,97 +1,33 @@
 namespace GitAspx.Lib
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using GitSharp.Core;
-    using GitSharp.Core.Transport;
 
-    public class GitRepository
+    public abstract class GitRepository
     {
-        private DirectoryInfo directory;
-        string rootDirectory;
+        protected DirectoryInfo directory;
+        protected string rootDirectory;
 
         public static GitRepository Open(DirectoryInfo directory, string rootDirectory)
         {
-            if (GitSharp.Repository.IsValid(directory.FullName))
-            {
-                return new GitRepository(directory, rootDirectory);
-            }
-
-            return null;
+            return new NGitBasedRepository(directory, rootDirectory);
         }
 
-        public GitRepository(DirectoryInfo directory, string rootDirectory)
+        protected GitRepository(DirectoryInfo directory, string rootDirectory)
         {
             this.directory = directory;
             this.rootDirectory = rootDirectory;
         }
 
-        public void AdvertiseUploadPack(Stream output)
-        {
-            using (var repository = GetRepository())
-            {
-                var pack = new UploadPack(repository);
-                pack.sendAdvertisedRefs(new RefAdvertiser.PacketLineOutRefAdvertiser(new PacketLineOut(output)));
-            }
-        }
+        public abstract void AdvertiseUploadPack(Stream output);
 
-        public void AdvertiseReceivePack(Stream output)
-        {
-            using (var repository = GetRepository())
-            {
-                var pack = new ReceivePack(repository);
-                pack.SendAdvertisedRefs(new RefAdvertiser.PacketLineOutRefAdvertiser(new PacketLineOut(output)));
-            }
-        }
+        public abstract void AdvertiseReceivePack(Stream output);
 
-        public void Receive(Stream inputStream, Stream outputStream)
-        {
-            using (var repository = GetRepository())
-            {
-                var pack = new ReceivePack(repository);
-                pack.setBiDirectionalPipe(false);
-                pack.receive(inputStream, outputStream, outputStream);
-            }
-        }
+        public abstract void Receive(Stream inputStream, Stream outputStream);
 
-        public void Upload(Stream inputStream, Stream outputStream)
-        {
-            using (var repository = GetRepository())
-            {
-                using (var pack = new UploadPack(repository))
-                {
-                    pack.setBiDirectionalPipe(false);
-                    pack.Upload(inputStream, outputStream, outputStream);
-                }
-            }
-        }
+        public abstract void Upload(Stream inputStream, Stream outputStream);
 
-        public CommitInfo GetLatestCommit()
-        {
-            using (var repository = new GitSharp.Repository(PhysicalPathDotGit))
-            {
-                var commit = repository.Head.CurrentCommit;
-
-                if (commit == null)
-                {
-                    return null;
-                }
-
-                return new CommitInfo
-                {
-                    Message = commit.Message,
-                    Date = commit.CommitDate.LocalDateTime
-                };
-            }
-        }
-
-        private GitSharp.Core.Repository GetRepository()
-        {
-            return GitSharp.Core.Repository.Open(directory);
-        }
+        public abstract CommitInfo GetLatestCommit();
 
         public string Name
         {
@@ -151,55 +87,7 @@ namespace GitAspx.Lib
             return Path.Combine(PhysicalPathDotGit, ".git");
         }
 
-        public void UpdateServerInfo()
-        {
-            using (var rep = GetRepository())
-            {
-                if (rep.ObjectDatabase is ObjectDirectory)
-                {
-                    RefWriter rw = new SimpleRefWriter(rep, rep.getAllRefs().Values);
-                    rw.writePackedRefs();
-                    rw.writeInfoRefs();
-
-                    var packs = GetPackRefs(rep);
-                    WriteInfoPacks(packs, rep);
-                }
-            }
-        }
-
-        private void WriteInfoPacks(IEnumerable<string> packs, GitSharp.Core.Repository repository)
-        {
-
-            var w = new StringBuilder();
-
-            foreach (string pack in packs)
-            {
-                w.Append("P ");
-                w.Append(pack);
-                w.Append('\n');
-            }
-
-            var infoPacksPath = Path.Combine(repository.ObjectsDirectory.FullName, "info/packs");
-            var encoded = Encoding.ASCII.GetBytes(w.ToString());
-
-
-            using (Stream fs = File.Create(infoPacksPath))
-            {
-                fs.Write(encoded, 0, encoded.Length);
-            }
-        }
-
-        private IEnumerable<string> GetPackRefs(GitSharp.Core.Repository repository)
-        {
-            var packDir = repository.ObjectsDirectory.GetDirectories().SingleOrDefault(x => x.Name == "pack");
-
-            if (packDir == null)
-            {
-                return Enumerable.Empty<string>();
-            }
-
-            return packDir.GetFiles("*.pack").Select(x => x.Name).ToList();
-        }
+        public abstract void UpdateServerInfo();
     }
 
     public class CommitInfo

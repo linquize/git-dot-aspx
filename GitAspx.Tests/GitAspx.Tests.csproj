@@ -35,9 +35,6 @@
     <Reference Include="CassiniDev4-lib">
       <HintPath>..\lib\cassinidev\CassiniDev4-lib.dll</HintPath>
     </Reference>
-    <Reference Include="GitSharp.Core">
-      <HintPath>..\lib\GitSharp\GitSharp.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Moq">
       <HintPath>..\lib\moq\Moq.dll</HintPath>
     </Reference>
@@ -69,6 +66,10 @@
     <ProjectReference Include="..\GitAspx\GitAspx.csproj">
       <Project>{3A732219-72CE-49B8-84F6-FE74E3762EE7}</Project>
       <Name>GitAspx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\lib\GitSharp\GitSharp.Core\GitSharp.Core-VS2010.csproj">
+      <Project>{C46EDD61-C202-465A-93F1-ADE20A83BB59}</Project>
+      <Name>GitSharp.Core-VS2010</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

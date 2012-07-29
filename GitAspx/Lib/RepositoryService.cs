@@ -114,7 +114,7 @@ namespace GitAspx.Lib
             if (!Directory.Exists(directory))
                 return null;
 
-            return new GitRepository(new DirectoryInfo(directory), appSettings.RepositoriesDirectory.FullName);
+            return GitRepository.Open(new DirectoryInfo(directory), appSettings.RepositoriesDirectory.FullName);
         }
 
         public Repository GetBackendRepository(string cat, string subcat, string project)

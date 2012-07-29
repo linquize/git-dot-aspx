@@ -1,3 +1,6 @@
 [submodule "lib/GitSharp"]
 	path = lib/GitSharp
 	url = https://github.com/linquize/GitSharp.git
+[submodule "lib/NGit"]
+	path = lib/NGit
+	url = https://github.com/linquize/ngit.git

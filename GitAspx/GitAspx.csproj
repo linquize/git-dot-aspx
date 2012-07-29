@@ -89,10 +89,13 @@
     <Compile Include="Lib\AppSettings.cs" />
     <Compile Include="Lib\ForbiddenResult.cs" />
     <Compile Include="Lib\WebBrowsingSettings.cs" />
-    <Compile Include="Lib\SimpleRefWriter.cs" />
+    <Compile Include="Lib\GitSharpCoreBasedSimpleRefWriter.cs" />
     <Compile Include="Lib\NotFoundResult.cs" />
     <Compile Include="Lib\GitRepository.cs" />
     <Compile Include="Lib\StructureMapControllerFactory.cs" />
+    <Compile Include="Lib\GitSharpCoreBasedRepository.cs" />
+    <Compile Include="Lib\NGitBasedRepository.cs" />
+    <Compile Include="Lib\NGitBasedSimpleRefWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Lib\RepositoryService.cs" />
     <Compile Include="PrettyDate.cs" />
@@ -235,6 +238,14 @@
     <ProjectReference Include="..\lib\GitSharp\GitSharp\GitSharp-VS2010.csproj">
       <Project>{7311850F-619A-4241-B09F-157792C75FBA}</Project>
       <Name>GitSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\lib\NGit\NGit\NGit.csproj">
+      <Project>{E3BFF8B4-189C-496A-A817-7E8B31E22B91}</Project>
+      <Name>NGit</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\lib\NGit\Sharpen\Sharpen.csproj">
+      <Project>{72944A6C-45FF-4EF8-B349-8C9CABF519D4}</Project>
+      <Name>Sharpen</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
