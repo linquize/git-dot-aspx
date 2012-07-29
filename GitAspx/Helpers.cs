@@ -21,6 +21,7 @@
 namespace GitAspx {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
@@ -187,7 +188,94 @@ namespace GitAspx {
         public static string ToHtmlWithSpaces(this string asText)
         {
             return HttpContext.Current.Server.HtmlEncode(asText).Replace("  ", "&nbsp;&nbsp;").Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-        } 
+        }
+
+        public static IEnumerable<TSource> OrderByStringNatural<TSource>(this IEnumerable<TSource> source, Func<TSource, string> keySelector)
+        {
+            return source.OrderBy(keySelector, StringNaturalComparer.Default);
+        }
+
+        class StringNaturalComparer : IComparer<string>
+        {
+            static StringNaturalComparer _default;
+            public static StringNaturalComparer Default { get { return _default ?? (_default = new StringNaturalComparer()); } }
+            public int Compare(string x, string y)
+            {
+                return CompareStringNatural(x, y);
+            }
+        }
+
+        static int CompareStringNatural(string s1, string s2)
+        {
+            if (s1 == null && s2 == null) return 0;
+            if (s1 == null) return -1;
+            if (s2 == null) return 1;
+            int x = 0;
+            int y = 0;
+            while (true)
+            {
+                if (x < s1.Length)
+                {
+                    if (y >= s2.Length)
+                        return 1;
+                }
+                else if (y < s2.Length)
+                    return -1;
+                else
+                    return 0;
+
+                char a = s1[x];
+                char b = s2[y];
+                if (!(char.IsDigit(a) && char.IsDigit(b)))
+                {
+                    if (a > b)
+                        return 1;
+                    if (a < b)
+                        return -1;
+                    x++;
+                    y++;
+                }
+                else
+                {
+                    bool zero = true;
+                    int m = x;
+                    while (m < s1.Length && char.IsDigit(s1[m]))
+                    {
+                        if (s1[m] == '0' && zero)
+                            x++;
+                        else
+                            zero = false;
+                        m++;
+                    }
+
+                    zero = true;
+                    int n = y;
+                    while (n < s2.Length && char.IsDigit(s2[n]))
+                    {
+                        if (s2[n] == '0' && zero)
+                            y++;
+                        else
+                            zero = false;
+                        n++;
+                    }
+
+                    if (m - x > n - y)
+                        return 1;
+                    else if (m - x < n - y)
+                        return -1;
+
+                    while (x < m)
+                    {
+                        if (s1[x] > s2[y])
+                            return 1;
+                        if (s1[x] < s2[y])
+                            return -1;
+                        x++;
+                        y++;
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Get Session
