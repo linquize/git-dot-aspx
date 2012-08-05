@@ -28,6 +28,7 @@ namespace GitAspx.Lib {
 		public bool UploadPack { get; set; }
 		public bool ReceivePack { get; set; }
         public int RepositoryLevel { get; set; }
+        public string UserHomeDirectory { get; set; }
 
         public static AppSettings FromAppConfig() {
 			var settings = new AppSettings();
@@ -56,6 +57,7 @@ namespace GitAspx.Lib {
             int liRepositoryLevel;
             settings.RepositoryLevel = int.TryParse(lsRepositoryLevel, out liRepositoryLevel) ? liRepositoryLevel : 1;
 
+            settings.UserHomeDirectory = ConfigurationManager.AppSettings["UserHomeDirectory"];
 			return settings;
 		}
 	}

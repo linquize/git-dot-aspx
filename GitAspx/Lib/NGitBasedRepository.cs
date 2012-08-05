@@ -11,9 +11,18 @@ namespace GitAspx.Lib
     using NGit.Transport;
     using Sharpen;
     using NGit;
+    using NGit.Util;
 
     public class NGitBasedRepository : GitRepository
     {
+        static NGitBasedRepository()
+        {
+            //Set user home directory if the home directory of the user running this application cannot be retrieved.
+            string lsPath = AppSettings.FromAppConfig().UserHomeDirectory;
+            if (!string.IsNullOrEmpty(lsPath))
+                FS.DETECTED.SetUserHome(new FilePath(lsPath));
+        }
+
         public NGitBasedRepository(DirectoryInfo directory, string rootDirectory)
             : base(directory, rootDirectory)
         {            
