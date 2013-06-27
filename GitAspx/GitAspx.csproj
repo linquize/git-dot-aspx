@@ -153,7 +153,6 @@
     <Content Include="Scripts\jquery-ui-1.8.18.js" />
     <Content Include="Scripts\jquery-ui-1.8.18.min.js" />
     <Content Include="Scripts\jquery.modal.js" />
-    <Content Include="Web.Template.config" />
     <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -213,21 +212,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config">
-      <DependentUpon>Web.Template.config</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.Template.config</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.Template.config</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\DirectoryList\Cat.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -251,38 +235,29 @@
   <ItemGroup>
     <Content Include="Views\TreeView\EmptyRepository.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target> -->
-  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
-    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
   </Target>
-  <!-- Make sure web.config will be there even for package/publish -->
-  <Target Name="CopyWebTemplateConfig" BeforeTargets="Build">
-    <Copy SourceFiles="Web.Template.config" DestinationFiles="Web.config" />
-    <TransformXml Source="Web.Template.config" Transform="Web.$(Configuration).config" Destination="Web.config" />
-  </Target>
-  <PropertyGroup>
-    <PrepareForRunDependsOn>
-      $(PrepareForRunDependsOn);
-      UpdateWebConfigBeforeRun;
-    </PrepareForRunDependsOn>
-  </PropertyGroup>
   <!-- This target will run right before you run your app in Visual Studio -->
-  <Target Name="UpdateWebConfigBeforeRun">
-    <Message Text="Configuration: $(Configuration): Web.$(Configuration).config" />
-    <TransformXml Source="Web.Template.config" Transform="Web.$(Configuration).config" Destination="Web.config" />
-  </Target>
-  <!-- Exclude the config template files from the created package -->
-  <Target Name="ExcludeCustomConfigTransformFiles" BeforeTargets="ExcludeFilesFromPackage">
-    <ItemGroup>
-      <ExcludeFromPackageFiles Include="Web.Template.config;Web.*.config" />
-    </ItemGroup>
-    <Message Text="ExcludeFromPackageFiles: @(ExcludeFromPackageFiles)" Importance="high" />
-  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
