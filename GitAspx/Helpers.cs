@@ -59,9 +59,9 @@ namespace GitAspx {
         public static string GetGitUrl(this UrlHelper urlHelper, string project)
         {
             string[] lsaParts = project.Split('/');
-            string lsCat = lsaParts.Length > 0 && lsaParts[0].Length > 0 ? lsaParts[0] : null;
-            string lsSubCat = lsaParts.Length > 1 && lsaParts[1].Length > 0 ? lsaParts[1] : null;
-            string lsProject = lsaParts.Length > 2 && lsaParts[2].Length > 0 ? lsaParts[2] : null;
+            string lsCat = lsaParts.Length > 1 && lsaParts[0].Length > 0 ? lsaParts[0] : null;
+            string lsSubCat = lsaParts.Length > 2 && lsaParts[1].Length > 0 ? lsaParts[1] : null;
+            string lsProject = lsaParts.Length > 0 && lsaParts[lsaParts.Length - 1].Length > 0 ? lsaParts[lsaParts.Length - 1] : null;
             return urlHelper.RouteUrl("giturl", new RouteValueDictionary(new { cat = lsCat, subcat = lsSubCat, project = lsProject }),
                                       urlHelper.RequestContext.HttpContext.Request.Url.Scheme,
                                       urlHelper.RequestContext.HttpContext.Request.Url.Host);
