@@ -62,6 +62,7 @@ namespace GitAspx.Controllers
             // If we don't set it, then it defaults to utf-8, which breaks jgit's logic for detecting smart http
             Response.Charset = "";
 
+            project = project.EndsWith(".git") ? project.Substring(0, project.Length - 4) : project;
             var repository = repositories.GetRepository(cat, subcat, project);
 
             if (repository == null)

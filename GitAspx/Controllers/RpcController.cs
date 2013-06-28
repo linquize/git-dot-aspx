@@ -66,6 +66,7 @@ namespace GitAspx.Controllers {
 			Response.ContentType = string.Format("application/x-git-{0}-result", rpc);
 			Response.WriteNoCache();
 
+			project = project.EndsWith(".git") ? project.Substring(0, project.Length - 4) : project;
 			var repository = repositories.GetRepository(cat, subcat, project);
 
 			if (repository == null) {

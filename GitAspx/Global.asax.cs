@@ -59,10 +59,10 @@ namespace GitAspx
                 MapSimpleRoute("DirectoryListCreate", lsCatSlash + "create", "DirectoryList", "CreateRepository");
             }
 
-            MapSimpleRouteGetOnly("info-refs", lsPath + ".git/info/refs", "InfoRefs", "Execute");
+            MapSimpleRouteGetOnly("info-refs", lsPath + "/info/refs", "InfoRefs", "Execute");
 
-            MapSimpleRoutePostOnly("upload-pack", lsPath + ".git/git-upload-pack", "Rpc", "UploadPack");
-            MapSimpleRoutePostOnly("receive-pack", lsPath + ".git/git-receive-pack", "Rpc", "ReceivePack");
+            MapSimpleRoutePostOnly("upload-pack", lsPath + "/git-upload-pack", "Rpc", "UploadPack");
+            MapSimpleRoutePostOnly("receive-pack", lsPath + "/git-receive-pack", "Rpc", "ReceivePack");
 
             MapSimpleRoute("get-info-packs", lsPath + ".git/info/packs", "Dumb", "GetInfoPacks");
             MapSimpleRoute("get-text-file", lsPath + ".git/HEAD", "Dumb", "GetHead");
